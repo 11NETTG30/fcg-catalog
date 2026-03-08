@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FCGCatalog.API/FCGCatalog.API.csproj" Id="4c2716e2-36c5-44c8-b5c6-f44ec671e88a" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>

@@ -1,0 +1,6 @@
+@FCGCatalog.API_HostAddress = http://localhost:5186
+
+GET {{FCGCatalog.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
