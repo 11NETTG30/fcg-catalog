@@ -9,9 +9,6 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Enums\" />
-    <Folder Include="Shared\Abstractions\" />
-    <Folder Include="Shared\Exceptions\" />
-    <Folder Include="Shared\Uow\" />
     <Folder Include="ValueObjects\" />
     <Folder Include="Services\" />
     <Folder Include="Repositories\" />
