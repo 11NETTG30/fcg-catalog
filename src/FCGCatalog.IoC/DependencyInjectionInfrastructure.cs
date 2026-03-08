@@ -1,6 +1,8 @@
 ﻿using FCGCatalog.Application.Identidade.Security;
+using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Abstractions;
 using FCGCatalog.Infrastructure.Identidade.Configurations;
+using FCGCatalog.Infrastructure.Persistence.Repositories;
 using FCGCatalog.Infrastructure.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -24,6 +26,8 @@ public static class DependencyInjectionInfrastructure
 
         private void AddRepositories()
         {
-        }
-    }
+			services.AddScoped<IJogoRepository, JogoRepository>();
+            services.AddScoped<IBibliotecaUsuarioRepository, BibliotecaUsuarioRepository>();
+		}
+	}
 }
