@@ -1,16 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using FCG.Application.Identidade.Security;
-using FCG.Application.Shared;
-using FCG.Domain.Identidade.Repositories;
-using FCG.Domain.Identidade.Security;
-using FCG.Domain.Shared.Abstractions;
-using FCG.Infrastructure.Identidade.Configurations;
-using FCG.Infrastructure.Identidade.Persistence.Repositories;
-using FCG.Infrastructure.Identidade.Security;
-using FCG.Infrastructure.Shared;
+﻿using FCGCatalog.Application.Identidade.Security;
+using FCGCatalog.Domain.Shared.Abstractions;
+using FCGCatalog.Infrastructure.Identidade.Configurations;
+using FCGCatalog.Infrastructure.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 namespace FCGCatalog.IoC;
+
 public static class DependencyInjectionInfrastructure
 {
     extension(IServiceCollection services)
@@ -20,9 +15,7 @@ public static class DependencyInjectionInfrastructure
             services.AddRepositories();
 
             services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));
-            services.AddScoped<IInformacoesUsuarioLogado, InformacoesUsuarioLogado>();
             services.AddSingleton<IJwtService, JwtService>();
-            services.AddSingleton<ISenhaHasher, Argon2IdSenhaHasher>();
 
             services.AddSingleton<ITokenSettings>(provider =>
             {
@@ -33,8 +26,6 @@ public static class DependencyInjectionInfrastructure
 
         private void AddRepositories()
         {
-            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         }
     }
 }
