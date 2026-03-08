@@ -15,8 +15,6 @@ public static class DependencyInjectionInfrastructure
             services.AddRepositories();
 
             services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));
-            services.AddSingleton<IJwtService, JwtService>();
-
             services.AddSingleton<ITokenSettings>(provider =>
             {
                 JwtSettings jwtSettings = provider.GetRequiredService<IOptions<JwtSettings>>().Value;
