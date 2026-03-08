@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FCGCatalog.IoC\FCGCatalog.IoC.csproj" />
+    <ProjectReference Include="..\FCGCatalog.Infrastructure\FCGCatalog.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

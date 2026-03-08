@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".env" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="FCGCatalog.IoC/FCGCatalog.IoC.csproj" Id="3fe1b3f9-8bea-4b4f-bc3d-3e9d07ec4a8b" />
     <Project Path="src/FCGCatalog.API/FCGCatalog.API.csproj" Id="4c2716e2-36c5-44c8-b5c6-f44ec671e88a" />
