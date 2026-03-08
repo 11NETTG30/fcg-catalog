@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FCGCatalog.Domain.Entities;
+using FCGCatalog.Infrastructure.Persistence.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace FCGCatalog.Infrastructure.Persistence;
 
 public sealed class CatalogoDbContext : DbContextUoW
 {
+	public DbSet<Jogo> Jogos => Set<Jogo>();
+
 	public CatalogoDbContext(DbContextOptions<CatalogoDbContext> options) : base(options)
 	{
 
@@ -11,7 +15,10 @@ public sealed class CatalogoDbContext : DbContextUoW
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-
+		modelBuilder.ApplyConfigurationsFromAssembly(
+			typeof(CatalogoDbContext).Assembly,
+			type => type.Namespace == typeof(JogoConfiguration).Namespace
+		);
 	}
 
 }
