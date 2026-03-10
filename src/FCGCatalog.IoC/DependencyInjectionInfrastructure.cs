@@ -2,6 +2,7 @@
 using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Abstractions;
 using FCGCatalog.Infrastructure.Identidade.Configurations;
+using FCGCatalog.Infrastructure.Messaging.Consumers;
 using FCGCatalog.Infrastructure.Persistence.Repositories;
 using FCGCatalog.Infrastructure.Shared;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ public static class DependencyInjectionInfrastructure
         {
             services.AddRepositories();
 
+            services.AddHostedService<PaymentProcessedConsumer>();
             services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));
             services.AddSingleton<ITokenSettings>(provider =>
             {
@@ -26,8 +28,8 @@ public static class DependencyInjectionInfrastructure
 
         private void AddRepositories()
         {
-			services.AddScoped<IJogoRepository, JogoRepository>();
+            services.AddScoped<IJogoRepository, JogoRepository>();
             services.AddScoped<IBibliotecaUsuarioRepository, BibliotecaUsuarioRepository>();
-		}
-	}
+        }
+    }
 }
