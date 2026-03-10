@@ -11,7 +11,7 @@ public sealed class BibliotecaUsuario : Entity, IAggregateRoot
 	// navegação EF Core
 	public Jogo? Jogo { get; private set; }
 
-	public BibliotecaUsuario
+	private BibliotecaUsuario
 	(
 		Guid usuarioId,
 		Guid jogoId
@@ -30,4 +30,7 @@ public sealed class BibliotecaUsuario : Entity, IAggregateRoot
 
 	// EF Core
 	private BibliotecaUsuario() { }
+
+	public static BibliotecaUsuario Criar(Guid usuarioId, Guid jogoId)
+		=> new BibliotecaUsuario(usuarioId, jogoId);
 }

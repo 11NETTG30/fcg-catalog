@@ -6,7 +6,7 @@ public sealed class Preco : ValueObject
 {
 	public decimal Valor { get; }
 
-	public Preco(decimal valor)
+	private Preco(decimal valor)
 	{
 		if (valor < 0)
 			throw new ValidationException("Preço não pode ser negativo");
@@ -16,6 +16,8 @@ public sealed class Preco : ValueObject
 
 		Valor = valor;
 	}
+
+	public static Preco Criar(decimal valor) => new Preco(valor);
 
 	protected override IEnumerable<object?> ObterComponentesDeIgualdade()
 	{

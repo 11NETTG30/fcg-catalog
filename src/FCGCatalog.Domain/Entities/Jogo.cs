@@ -5,7 +5,7 @@ namespace FCGCatalog.Domain.Entities;
 
 public sealed class Jogo : Entity, IAggregateRoot, IAuditavel
 {
-	private const decimal PRECO_MAXIMO = 10000;
+	public const decimal PRECO_MAXIMO = 10000;
 
 	public string Titulo { get; private set; } = null!;
 	public string? Descricao { get; private set; }
@@ -15,7 +15,7 @@ public sealed class Jogo : Entity, IAggregateRoot, IAuditavel
 	public DateTime DataCriacao { get; private set; }
 	public DateTime? DataAtualizacao { get; private set; }
 
-	public Jogo
+	private Jogo
 	(
 		string titulo,
 		Preco preco,
@@ -64,6 +64,14 @@ public sealed class Jogo : Entity, IAggregateRoot, IAuditavel
 
 	public void SetDataLancamento(DateTime? dataLancamento) =>
 		DataLancamento = dataLancamento;
+
+	public static Jogo Criar
+	(
+		string titulo,
+		Preco preco,
+		string? descricao = null,
+		DateTime? dataLancamento = null
+	) => new(titulo, preco, descricao, dataLancamento);
 
 	public void Ativar() =>
 		Ativo = true;

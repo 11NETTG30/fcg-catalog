@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\FCGCatalog.IoC\FCGCatalog.IoC.csproj" />
     <ProjectReference Include="..\FCGCatalog.Infrastructure\FCGCatalog.Infrastructure.csproj" />
   </ItemGroup>
