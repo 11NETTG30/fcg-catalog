@@ -1,4 +1,5 @@
-﻿using DotNetEnv;
+﻿using FCGCatalog.API.Configurations;
+using FCGCatalog.API.Middlewares;
 using FCGCatalog.Infrastructure.Configurations;
 using FCGCatalog.IoC;
 
@@ -6,17 +7,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.RegisterIoCConfigurations();
 
-builder.Services.AddControllers();
-
-builder.Services.AddOpenApi();
-
+builder.AddLoggingConfiguration();
+builder.Services.AddControllersConfiguration();
+builder.Services.AddDocumentation();
+builder.Services.AddProblemDetailsConfiguration();
+builder.Services.ConfigureModelStateInvalid();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+	app.UseDocumentation();
 }
+
+app.UseGlobalExceptionMiddleware();
+app.UseDomainExceptionMiddleware();
 
 app.UseHttpsRedirection();
 
