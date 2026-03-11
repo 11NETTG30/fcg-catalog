@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FCGCatalog.IoC\FCGCatalog.IoC.csproj" />
     <ProjectReference Include="..\FCGCatalog.Infrastructure\FCGCatalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\FCGCatalog.IoC\FCGCatalog.IoC.csproj" />
   </ItemGroup>
 
 </Project>

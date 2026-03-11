@@ -12,14 +12,14 @@ public static class DatabaseConfiguration
 	{
 		public void AddDatabase(IConfiguration configuration)
 		{
-			string? connectionString = configuration.GetConnectionString("DefaultConnection");
-
 			services.AddSingleton<AuditoriaSaveChangesInterceptor>();
-			services.AddDatabasePostgreSQL<CatalogoDbContext>(connectionString!);
+			services.AddDatabasePostgreSQL<CatalogoDbContext>(configuration);
 		}
 
-		private void AddDatabasePostgreSQL<T>(string connectionString) where T : DbContext
+		private void AddDatabasePostgreSQL<T>(IConfiguration configuration) where T : DbContext
 		{
+			string? connectionString = configuration.GetConnectionString("DefaultConnection");
+
 			services.AddDbContext<T>((serviceProvider, options) =>
 				options
 					.UseNpgsql(connectionString, optionsPostgress =>

@@ -1,14 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace FCGCatalog.IoC;
+namespace FCGCatalog.IoC.Configurations;
 
-public static class DependencyInjectionApplication
+public static class DomainConfiguration
 {
     extension(IServiceCollection services)
     {
-        internal void AddApplication()
+        internal void ConfigureDomain()
         {
-
         }
     }
 }
