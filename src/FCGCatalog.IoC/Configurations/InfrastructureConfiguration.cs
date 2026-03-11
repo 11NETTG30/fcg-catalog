@@ -3,6 +3,7 @@ using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Abstractions;
 using FCGCatalog.Infrastructure.Configurations;
 using FCGCatalog.Infrastructure.Identidade.Configurations;
+using FCGCatalog.Infrastructure.Persistence.Repositories;
 using FCGCatalog.Infrastructure.Shared;
 using FCGCatalog.IoC;
 using Microsoft.Extensions.Configuration;
@@ -30,11 +31,8 @@ public static class InfrastructureConfiguration
 
         private void ConfigureRepositories()
         {
-			services.Scan(scan => scan
-	            .FromAssemblies(typeof(IJogoRepository).Assembly)
-	            .AddClasses(classes => classes.AssignableTo(typeof(IJogoRepository)))
-	            .AsImplementedInterfaces()
-	            .WithScopedLifetime());
+            services.AddScoped<IJogoRepository, JogoRepository>();
+            services.AddScoped<IBibliotecaUsuarioRepository, BibliotecaUsuarioRepository>();
 		}
 	}
 }
