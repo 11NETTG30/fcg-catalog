@@ -33,6 +33,6 @@ public static class InfrastructureConfiguration
         {
             services.AddScoped<IJogoRepository, JogoRepository>();
             services.AddScoped<IBibliotecaUsuarioRepository, BibliotecaUsuarioRepository>();
-		}
-	}
+        }
+    }
 }
