@@ -1,6 +1,4 @@
-﻿using FCGCatalog.Application.Interfaces;
-using FCGCatalog.Infrastructure.Messaging;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace FCGCatalog.IoC;
 
@@ -10,7 +8,7 @@ public static class DependencyInjectionApplication
     {
         internal void AddApplication()
         {
-            services.AddSingleton<IEventBus, RabbitMqEventBus>();
+            //services.AddSingleton<IEventBus, RabbitMqEventBus>();
         }
     }
 }

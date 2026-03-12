@@ -1,21 +1,24 @@
-﻿using FCGCatalog.Application.Commands.AddGameToLibrary;
+﻿using FCGCatalog.Application.Events;
+using FCGCatalog.Application.Interfaces;
 using MediatR;
 
 namespace FCGCatalog.Application.Features.BibliotecaUsuario.AdicionarJogo
 {
     public sealed class AdicionarJogoUseCase(
-        IMediator mediator) : IRequestHandler<AdicionarJogoRequest, AdicionarJogoResponse>
+        IEventBus eventBus) : IRequestHandler<AdicionarJogoRequest, AdicionarJogoResponse>
     {
-        private readonly IMediator _mediator = mediator;
+        private readonly IEventBus _eventBus = eventBus;
+
         public Task<AdicionarJogoResponse> Handle(AdicionarJogoRequest request, CancellationToken cancellationToken)
         {
-            AddGameToLibraryCommand command = new AddGameToLibraryCommand
+            // Adicionar lógica de verificações e tals
+            var orderEvent = new OrderPlacedEvent
             {
                 UserId = Guid.NewGuid(),
                 GameId = Guid.NewGuid(),
                 Price = 0
             };
-            _mediator.Send(command, cancellationToken);
+            _eventBus.PublishAsync(orderEvent);
             throw new NotImplementedException();
         }
     }
