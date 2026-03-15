@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FCGCatalog.API.Controllers;
 
-
 [ApiController]
 [Route("api/jogos")]
 public sealed class JogosController : ControllerBase
@@ -18,14 +17,14 @@ public sealed class JogosController : ControllerBase
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status201Created)]
-	public async Task<IActionResult> Criar([FromBody] CriarJogoRequest request)
+	public async Task<IActionResult> Criar([FromBody] CriarJogoCommand request)
 	{
 		var response = await _mediator.Send(request);
 
 		return CreatedAtAction(nameof(ObterPorId), new { id = response.Id }, response);
 	}
 
-	[HttpGet]
+	[HttpGet("{id:guid}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public IActionResult ObterPorId(Guid id)
 	{

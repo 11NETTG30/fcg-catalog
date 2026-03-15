@@ -2,7 +2,7 @@
 
 namespace FCGCatalog.Application.Features.Jogo.CriarJogo;
 
-public sealed record CriarJogoRequest
+public sealed record CriarJogoCommand
 (
 	string Titulo,
 	string Descricao,

@@ -2,7 +2,7 @@
 
 namespace FCGCatalog.Application.Features.Jogo.CriarJogo;
 
-public sealed class CriarJogoValidator : AbstractValidator<CriarJogoRequest>
+public sealed class CriarJogoValidator : AbstractValidator<CriarJogoCommand>
 {
 	public CriarJogoValidator()
 	{

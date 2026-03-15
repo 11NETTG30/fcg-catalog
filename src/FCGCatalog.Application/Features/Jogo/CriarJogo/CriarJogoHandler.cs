@@ -6,17 +6,17 @@ using JogoDomain = FCGCatalog.Domain.Entities.Jogo;
 
 namespace FCGCatalog.Application.Features.Jogo.CriarJogo;
 
-public sealed class CriarJogoUseCase : IRequestHandler<CriarJogoRequest, CriarJogoResponse>
+public sealed class CriarJogoHandler : IRequestHandler<CriarJogoCommand, CriarJogoResponse>
 {
 	private readonly IJogoRepository _repository;
 
-	public CriarJogoUseCase(IJogoRepository repository)
+	public CriarJogoHandler(IJogoRepository repository)
 	{
 		_repository = repository;
 	}
 
 	public async Task<CriarJogoResponse> Handle(
-		CriarJogoRequest request,
+		CriarJogoCommand request,
 		CancellationToken cancellationToken)
 	{
 		var jogoJaExiste = await _repository.ExistePorTitulo(request.Titulo);
