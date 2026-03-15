@@ -18,7 +18,8 @@ public static class InfrastructureConfiguration
     {
         internal void ConfigureInfrastructure(IConfiguration configuration)
 		{
-            services.AddDatabase(configuration);
+            services.ConfigureMessaging(configuration);
+			services.ConfigureDatabase(configuration);
 			services.ConfigureRepositories();
 
             services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));

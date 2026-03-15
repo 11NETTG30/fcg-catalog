@@ -10,13 +10,13 @@ public static class DatabaseConfiguration
 {
 	extension(IServiceCollection services)
 	{
-		public void AddDatabase(IConfiguration configuration)
+		public void ConfigureDatabase(IConfiguration configuration)
 		{
 			services.AddSingleton<AuditoriaSaveChangesInterceptor>();
-			services.AddDatabasePostgreSQL<CatalogoDbContext>(configuration);
+			services.ConfigureDatabasePostgreSQL<CatalogoDbContext>(configuration);
 		}
 
-		private void AddDatabasePostgreSQL<T>(IConfiguration configuration) where T : DbContext
+		private void ConfigureDatabasePostgreSQL<T>(IConfiguration configuration) where T : DbContext
 		{
 			string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
