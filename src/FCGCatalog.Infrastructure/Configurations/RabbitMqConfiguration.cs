@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using FCGCatalog.Infrastructure.Messaging.Setup;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ public static class RabbitMqConfiguration
 				x.AddConsumers(typeof(RabbitMqConfiguration).Assembly);
 				x.UsingRabbitMq((context, cfg) =>
 				{
+					cfg.MessageTopology.SetEntityNameFormatter(new CustomNameEntityNameFormatter());
 					cfg.Host(
 						rabbit.Host,
 						rabbit.VirtualHost,
