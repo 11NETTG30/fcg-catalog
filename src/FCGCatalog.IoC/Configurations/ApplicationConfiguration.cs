@@ -29,6 +29,7 @@ public static class ApplicationConfiguration
 			});
 
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 		}
 
 		private void ConfigureFluentValidation()

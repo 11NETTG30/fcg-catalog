@@ -35,9 +35,4 @@ public sealed class JogoRepository : IJogoRepository
 		return await _dbSet.FirstOrDefaultAsync(j => j.Id == id, cancellationToken);
 	}
 
-	public void Dispose()
-	{
-		_dbContext?.Dispose();
-	}
-
 }
