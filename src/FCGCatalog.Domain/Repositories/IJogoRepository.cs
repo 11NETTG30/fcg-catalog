@@ -7,4 +7,5 @@ public interface IJogoRepository : IRepository<Jogo>
 {
     Task Adicionar(Jogo jogo);
     Task<bool> ExistePorTitulo(string titulo);
+    Task<Jogo?> ObterPorId(Guid id, CancellationToken cancellationToken);
 }

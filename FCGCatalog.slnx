@@ -1,8 +1,7 @@
 <Solution>
-  <Folder Name="/Solution Items/">
-    <File Path=".env" />
-  </Folder>
+  <Folder Name="/Solution Items/" />
   <Folder Name="/src/">
+    <Project Path="src/FCG.Contracts/FCG.Contracts.csproj" Id="e0471431-e4e5-49ca-99e1-68a2489780d1" />
     <Project Path="src/FCGCatalog.API/FCGCatalog.API.csproj" Id="4c2716e2-36c5-44c8-b5c6-f44ec671e88a" />
     <Project Path="src/FCGCatalog.Application/FCGCatalog.Application.csproj" Id="62a4b8b5-aa50-44d9-96b7-18ffbd84ed8b" />
     <Project Path="src/FCGCatalog.Domain/FCGCatalog.Domain.csproj" Id="8c46d51f-ba58-43d2-afe8-e54190d8ba31" />

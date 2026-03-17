@@ -14,4 +14,4 @@ public static class Configuration
 			builder.Services.ConfigureInfrastructure(builder.Configuration);
         }
 	}
-}
+} 

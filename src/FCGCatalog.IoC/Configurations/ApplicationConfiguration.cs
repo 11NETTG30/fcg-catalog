@@ -25,7 +25,7 @@ public static class ApplicationConfiguration
         {
 			services.AddMediatR(cfg =>
 			{
-				cfg.RegisterServicesFromAssembly(typeof(CriarJogoUseCase).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CriarJogoHandler).Assembly);
 			});
 
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

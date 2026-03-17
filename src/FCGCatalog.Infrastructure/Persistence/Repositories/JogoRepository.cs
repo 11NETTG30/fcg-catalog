@@ -30,6 +30,11 @@ public sealed class JogoRepository : IJogoRepository
 			j.Titulo.Trim().ToLower() == tituloNormalizado);
 	}
 
+	public async Task<Jogo?> ObterPorId(Guid id, CancellationToken cancellationToken)
+	{
+		return await _dbSet.FirstOrDefaultAsync(j => j.Id == id, cancellationToken);
+	}
+
 	public void Dispose()
 	{
 		_dbContext?.Dispose();
