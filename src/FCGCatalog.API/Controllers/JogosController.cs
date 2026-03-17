@@ -1,6 +1,4 @@
-﻿using FCGCatalog.API.Contracts.Jogo;
-using FCGCatalog.Application.Features.Jogo.ComprarJogo;
-using FCGCatalog.Application.Features.Jogo.CriarJogo;
+﻿using FCGCatalog.Application.Features.Jogo.CriarJogo;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,16 +29,5 @@ public sealed class JogosController : ControllerBase
 	public IActionResult ObterPorId(Guid id)
 	{
 		throw new NotImplementedException();
-	}
-
-	[HttpPost("{id:guid}/comprar")]
-	[ProducesResponseType(StatusCodes.Status202Accepted)]
-	public async Task<IActionResult> Comprar(Guid id, [FromBody] IniciarCompraJogoRequest request)
-	{
-		var command = new IniciarCompraJogoCommand(id, request.UsuarioId);
-
-		await _mediator.Send(command);
-
-		return Accepted();
 	}
 }

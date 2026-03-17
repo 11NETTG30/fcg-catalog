@@ -2,8 +2,9 @@
 using FCG.Contracts.Events;
 using FCGCatalog.Domain.Repositories;
 using MediatR;
+using FCGCatalog.Domain.Shared.Abstractions;
 
-namespace FCGCatalog.Application.Features.Jogo.ComprarJogo;
+namespace FCGCatalog.Application.Features.BibliotecaUsuario.IniciarCompraJogo;
 
 public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogoCommand, Unit>
 {
@@ -25,7 +26,7 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 			cancellationToken);
 
 		if (jogo is null)
-			throw new InvalidOperationException("Jogo não encontrado.");
+			throw new ValidationException("Jogo não encontrado.");
 
 		var evento = new OrderPlacedEvent
 		(

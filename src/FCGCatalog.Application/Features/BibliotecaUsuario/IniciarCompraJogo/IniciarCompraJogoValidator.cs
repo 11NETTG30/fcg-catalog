@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FCGCatalog.Application.Features.Jogo.ComprarJogo;
+namespace FCGCatalog.Application.Features.BibliotecaUsuario.IniciarCompraJogo;
 
 public sealed class IniciarCompraJogoValidator : AbstractValidator<IniciarCompraJogoCommand>
 {

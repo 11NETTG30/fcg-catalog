@@ -1,9 +1,8 @@
-﻿using FCGCatalog.Application.Features.Jogo.ComprarJogo;
-using MediatR;
+﻿using MediatR;
 
 namespace FCGCatalog.API.Contracts.Jogo;
 
 public sealed record IniciarCompraJogoRequest
 (
-	Guid UsuarioId
+	Guid JogoId
 ) : IRequest<Unit>;
