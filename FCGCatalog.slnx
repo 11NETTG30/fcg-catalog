@@ -1,5 +1,12 @@
 <Solution>
-  <Folder Name="/Solution Items/" />
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path="docker-publish.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path="Dockerfile" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/FCG.Contracts/FCG.Contracts.csproj" Id="e0471431-e4e5-49ca-99e1-68a2489780d1" />
     <Project Path="src/FCGCatalog.API/FCGCatalog.API.csproj" Id="4c2716e2-36c5-44c8-b5c6-f44ec671e88a" />

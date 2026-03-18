@@ -20,7 +20,10 @@ public sealed class BibliotecaUsuarioController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status202Accepted)]
 	public async Task<IActionResult> Comprar(Guid usuarioId, [FromBody] IniciarCompraJogoRequest request)
 	{
-		var command = new IniciarCompraJogoCommand(usuarioId, request.JogoId);
+		var command = new IniciarCompraJogoCommand(
+			UsuarioId: usuarioId, 
+			JogoId: request.JogoId
+		);
 
 		await _mediator.Send(command);
 
