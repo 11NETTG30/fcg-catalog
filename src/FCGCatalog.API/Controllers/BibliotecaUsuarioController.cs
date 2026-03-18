@@ -32,6 +32,20 @@ public sealed class BibliotecaUsuarioController : ControllerBase
 
         return Ok(response);
     }
+    
+	  [HttpPost("{usuarioId:guid}/comprar")]
+	  [ProducesResponseType(StatusCodes.Status202Accepted)]
+	  public async Task<IActionResult> Comprar(Guid usuarioId, [FromBody] IniciarCompraJogoRequest request)
+	  {
+        var command = new IniciarCompraJogoCommand(
+          UsuarioId: usuarioId, 
+          JogoId: request.JogoId
+        );
+
+        var response = await _mediator.Send(query);
+
+        return Ok(response);
+    }
 
     [HttpPost("{usuarioId:guid}/comprar")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
