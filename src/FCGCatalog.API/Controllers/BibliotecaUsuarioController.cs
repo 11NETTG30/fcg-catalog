@@ -42,7 +42,7 @@ public sealed class BibliotecaUsuarioController : ControllerBase
           JogoId: request.JogoId
         );
 
-        var response = await _mediator.Send(query);
+        var response = await _mediator.Send(command);
 
         return Ok(response);
     }
