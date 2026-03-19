@@ -31,7 +31,7 @@ namespace FCGCatalog.Infrastructure.Messaging.Consumers
 				StatusPagamento: status
 			);
 
-			await _mediator.Send(command);
+			await _mediator.Send(command, context.CancellationToken);
 		}
 	}
 }

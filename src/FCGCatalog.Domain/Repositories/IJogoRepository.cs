@@ -5,7 +5,7 @@ namespace FCGCatalog.Domain.Repositories;
 
 public interface IJogoRepository : IRepository<Jogo>
 {
-    Task Adicionar(Jogo jogo);
-    Task<bool> ExistePorTitulo(string titulo);
-    Task<Jogo?> ObterPorId(Guid id, CancellationToken cancellationToken);
+    Task Adicionar(Jogo jogo, CancellationToken cancellationToken);
+	Task<bool> ExistePorTitulo(string titulo, CancellationToken cancellationToken);
+	Task<Jogo?> ObterPorId(Guid id, CancellationToken cancellationToken);
 }

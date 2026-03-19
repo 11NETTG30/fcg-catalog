@@ -19,7 +19,7 @@ public sealed class CriarJogoHandler : IRequestHandler<CriarJogoCommand, CriarJo
 		CriarJogoCommand request,
 		CancellationToken cancellationToken)
 	{
-		var jogoJaExiste = await _repository.ExistePorTitulo(request.Titulo);
+		var jogoJaExiste = await _repository.ExistePorTitulo(request.Titulo, cancellationToken);
 
 		if (jogoJaExiste)
 			throw new ConflictException("Já existe um jogo com esse título.");
@@ -31,9 +31,9 @@ public sealed class CriarJogoHandler : IRequestHandler<CriarJogoCommand, CriarJo
 			dataLancamento: request.DataLancamento
 		);
 
-		await _repository.Adicionar(jogo);
+		await _repository.Adicionar(jogo, cancellationToken);
 
-		await _repository.UnitOfWork.Commit();
+		await _repository.UnitOfWork.Commit(cancellationToken);
 
 		return new CriarJogoResponse(jogo.Id);
 	}

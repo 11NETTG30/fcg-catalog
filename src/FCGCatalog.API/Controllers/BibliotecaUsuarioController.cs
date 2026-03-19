@@ -24,51 +24,51 @@ public sealed class BibliotecaUsuarioController : ControllerBase
     [HttpGet("{usuarioId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ObterPorUsuario(Guid usuarioId)
+    public async Task<IActionResult> ObterPorUsuario(Guid usuarioId, CancellationToken cancellationToken)
     {
         var query = new ObterBibliotecaUsuarioQuery(usuarioId);
 
-        var response = await _mediator.Send(query);
+        var response = await _mediator.Send(query, cancellationToken);
 
         return Ok(response);
     }
     
 	  [HttpPost("{usuarioId:guid}/comprar")]
 	  [ProducesResponseType(StatusCodes.Status202Accepted)]
-	  public async Task<IActionResult> Comprar(Guid usuarioId, [FromBody] IniciarCompraJogoRequest request)
+	  public async Task<IActionResult> Comprar(Guid usuarioId, [FromBody] IniciarCompraJogoRequest request, CancellationToken cancellationToken)
 	  {
         var command = new IniciarCompraJogoCommand(
           UsuarioId: usuarioId, 
           JogoId: request.JogoId
         );
 
-        var response = await _mediator.Send(command);
+        var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(response);
+		return Ok(response);
     }
 
     [HttpPut("{usuarioId:guid}/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Atualizar(Guid usuarioId, Guid id, [FromBody] AtualizarBibliotecaUsuarioRequest request)
+    public async Task<IActionResult> Atualizar(Guid usuarioId, Guid id, [FromBody] AtualizarBibliotecaUsuarioRequest request, CancellationToken cancellationToken)
     {
         var command = new AtualizarBibliotecaUsuarioCommand(usuarioId, id, request.JogoId);
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
-        return NoContent();
+		return NoContent();
     }
 
     [HttpPatch("{usuarioId:guid}/{id:guid}/status")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> AtualizarStatus(Guid usuarioId, Guid id, [FromBody] AtualizarStatusPagamentoRequest request)
+    public async Task<IActionResult> AtualizarStatus(Guid usuarioId, Guid id, [FromBody] AtualizarStatusPagamentoRequest request, CancellationToken cancellationToken)
     {
         var command = new AtualizarStatusPagamentoCommand(usuarioId, id, request.StatusPagamento);
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
-        return NoContent();
+		return NoContent();
     }
 
 }

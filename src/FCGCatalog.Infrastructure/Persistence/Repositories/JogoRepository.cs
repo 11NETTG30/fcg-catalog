@@ -17,17 +17,17 @@ public sealed class JogoRepository : IJogoRepository
 		_dbSet = _dbContext.Set<Jogo>();
 	}
 
-    public async Task Adicionar(Jogo jogo)
+    public async Task Adicionar(Jogo jogo, CancellationToken cancellationToken)
     {
-		await _dbSet.AddAsync(jogo);
+		await _dbSet.AddAsync(jogo, cancellationToken);
 	}
 
-	public async Task<bool> ExistePorTitulo(string titulo)
+	public async Task<bool> ExistePorTitulo(string titulo, CancellationToken cancellationToken)
 	{
 		string tituloNormalizado = titulo.Trim().ToLower();
 
-		return await _dbSet.AnyAsync(j =>
-			j.Titulo.Trim().ToLower() == tituloNormalizado);
+		return await _dbSet.AnyAsync((j =>
+			j.Titulo.Trim().ToLower() == tituloNormalizado), cancellationToken);
 	}
 
 	public async Task<Jogo?> ObterPorId(Guid id, CancellationToken cancellationToken)

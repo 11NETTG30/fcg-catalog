@@ -1,6 +1,5 @@
 ﻿using FCGCatalog.Domain.Enums;
 using FCGCatalog.Domain.Repositories;
-using FCGCatalog.Domain.Shared.Uow;
 using MediatR;
 using BibliotecaUsuarioDomain = FCGCatalog.Domain.Entities.BibliotecaUsuario;
 
@@ -32,7 +31,7 @@ namespace FCGCatalog.Application.Features.BibliotecaUsuario.ProcessarPagamentoDa
 				cancellationToken
 			);
 
-			await _repository.UnitOfWork.Commit();
+			await _repository.UnitOfWork.Commit(cancellationToken);
 
 			return Unit.Value;
 		}
