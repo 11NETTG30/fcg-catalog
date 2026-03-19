@@ -8,26 +8,27 @@ namespace FCGCatalog.Infrastructure.Configurations;
 
 public static class DatabaseConfiguration
 {
-	extension(IServiceCollection services)
+	public static IServiceCollection ConfigureDatabase(
+		this IServiceCollection services,
+		IConfiguration configuration)
 	{
-		public void ConfigureDatabase(IConfiguration configuration)
-		{
-			services.AddSingleton<AuditoriaSaveChangesInterceptor>();
-			services.ConfigureDatabasePostgreSQL<CatalogoDbContext>(configuration);
-		}
+		services.AddSingleton<AuditoriaSaveChangesInterceptor>();
+		services.ConfigureDatabasePostgreSQL<CatalogoDbContext>(configuration);
 
-		private void ConfigureDatabasePostgreSQL<T>(IConfiguration configuration) where T : DbContext
-		{
-			string? connectionString = configuration.GetConnectionString("DefaultConnection");
+		return services;
+	}
 
-			services.AddDbContext<T>((serviceProvider, options) =>
-				options
-					.UseNpgsql(connectionString, optionsPostgress =>
-					{
-						optionsPostgress.MigrationsHistoryTable("__ef_migrations_history");
-					})
-					.AddInterceptors(serviceProvider.GetRequiredService<AuditoriaSaveChangesInterceptor>())
-			);
-		}
+	private static void ConfigureDatabasePostgreSQL<T>(this IServiceCollection services, IConfiguration configuration) where T : DbContext
+	{
+		string? connectionString = configuration.GetConnectionString("DefaultConnection");
+
+		services.AddDbContext<T>((serviceProvider, options) =>
+			options
+				.UseNpgsql(connectionString, optionsPostgress =>
+				{
+					optionsPostgress.MigrationsHistoryTable("__ef_migrations_history");
+				})
+				.AddInterceptors(serviceProvider.GetRequiredService<AuditoriaSaveChangesInterceptor>())
+		);
 	}
 }

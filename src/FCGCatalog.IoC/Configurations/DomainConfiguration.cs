@@ -4,10 +4,9 @@ namespace FCGCatalog.IoC.Configurations;
 
 public static class DomainConfiguration
 {
-    extension(IServiceCollection services)
-    {
-        internal void ConfigureDomain()
-        {
-        }
-    }
+	public static IServiceCollection ConfigureDomain(
+		this IServiceCollection services)
+	{
+		return services;
+	}
 }

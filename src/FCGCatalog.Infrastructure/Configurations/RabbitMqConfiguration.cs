@@ -1,6 +1,5 @@
 ﻿using FCGCatalog.Infrastructure.Messaging.Setup;
 using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,34 +7,37 @@ namespace FCGCatalog.Infrastructure.Configurations;
 
 public static class RabbitMqConfiguration
 {
-	extension(IServiceCollection services)
+	public static IServiceCollection ConfigureMessaging(
+		this IServiceCollection services,
+		IConfiguration configuration)
 	{
-		public void ConfigureMessaging(IConfiguration configuration)
+		services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMQ"));
+
+		var rabbit = configuration
+			.GetSection("RabbitMQ")
+			.Get<RabbitMqSettings>()!;
+
+		services.AddMassTransit(x =>
 		{
-			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMQ"));
+			x.AddConsumers(typeof(RabbitMqConfiguration).Assembly);
 
-			var rabbit = configuration
-				.GetSection("RabbitMQ")
-				.Get<RabbitMqSettings>()!;
-
-			services.AddMassTransit(x =>
+			x.UsingRabbitMq((context, cfg) =>
 			{
-				x.AddConsumers(typeof(RabbitMqConfiguration).Assembly);
-				x.UsingRabbitMq((context, cfg) =>
-				{
-					cfg.MessageTopology.SetEntityNameFormatter(new CustomNameEntityNameFormatter());
-					cfg.Host(
-						rabbit.Host,
-						rabbit.VirtualHost,
-						h =>
-						{
-							h.Username(rabbit.Username);
-							h.Password(rabbit.Password);
-						});
+				cfg.MessageTopology.SetEntityNameFormatter(new CustomNameEntityNameFormatter());
 
-					cfg.ConfigureEndpoints(context);
-				});
+				cfg.Host(
+					rabbit.Host,
+					rabbit.VirtualHost,
+					h =>
+					{
+						h.Username(rabbit.Username);
+						h.Password(rabbit.Password);
+					});
+
+				cfg.ConfigureEndpoints(context);
 			});
-		}
+		});
+
+		return services;
 	}
 }
