@@ -32,7 +32,6 @@ public sealed class CriarJogoHandler : IRequestHandler<CriarJogoCommand, CriarJo
 		);
 
 		await _repository.Adicionar(jogo, cancellationToken);
-
 		await _repository.UnitOfWork.Commit(cancellationToken);
 
 		return new CriarJogoResponse(jogo.Id);
