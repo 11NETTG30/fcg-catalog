@@ -2,6 +2,7 @@
 using FCGCatalog.Domain.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Runtime.CompilerServices;
 
 namespace FCGCatalog.API.Middlewares;
 
@@ -60,11 +61,8 @@ public class DomainExceptionMiddleware
 
 public static class DomainExceptionMiddlewareExtensions
 {
-	extension(IApplicationBuilder app)
+	public static void UseDomainExceptionMiddleware(this IApplicationBuilder app)
 	{
-		public void UseDomainExceptionMiddleware()
-		{
-			app.UseMiddleware<DomainExceptionMiddleware>();
-		}
+		app.UseMiddleware<DomainExceptionMiddleware>();
 	}
 }
