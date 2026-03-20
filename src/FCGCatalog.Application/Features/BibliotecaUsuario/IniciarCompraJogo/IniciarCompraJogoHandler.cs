@@ -1,5 +1,5 @@
 ﻿using FCGCatalog.Application.Abstractions.Messaging;
-using FCG.Contracts.Events;
+using FCG.Shared.Contracts.Events;
 using FCGCatalog.Domain.Repositories;
 using MediatR;
 using FCGCatalog.Domain.Shared.Abstractions;
@@ -32,7 +32,8 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 		(
 			GameId: jogo.Id,
 			UserId: request.UsuarioId,
-			Price: jogo.Preco.Valor
+			Price: jogo.Preco.Valor,
+			Email: request.Email
 		);
 
 		await _eventPublisher.PublishAsync(evento, cancellationToken);

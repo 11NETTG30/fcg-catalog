@@ -6,6 +6,7 @@ using FCGCatalog.Application.Features.BibliotecaUsuario.ObterBibliotecaUsuario;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FCGCatalog.API.Controllers;
 
@@ -37,9 +38,12 @@ public sealed class BibliotecaUsuarioController : ControllerBase
 	  [ProducesResponseType(StatusCodes.Status202Accepted)]
 	  public async Task<IActionResult> Comprar(Guid usuarioId, [FromBody] IniciarCompraJogoRequest request, CancellationToken cancellationToken)
 	  {
+        var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value ?? string.Empty;
+
         var command = new IniciarCompraJogoCommand(
-          UsuarioId: usuarioId, 
-          JogoId: request.JogoId
+          UsuarioId: usuarioId,
+          JogoId: request.JogoId,
+          Email: email
         );
 
         var response = await _mediator.Send(command, cancellationToken);

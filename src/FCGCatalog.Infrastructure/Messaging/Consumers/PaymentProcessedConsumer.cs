@@ -1,4 +1,4 @@
-﻿using FCG.Contracts.Events;
+﻿using FCG.Shared.Contracts.Events;
 using FCGCatalog.Application.Features.BibliotecaUsuario.ProcessarPagamentoDaCompra;
 using FCGCatalog.Domain.Enums;
 using MassTransit;

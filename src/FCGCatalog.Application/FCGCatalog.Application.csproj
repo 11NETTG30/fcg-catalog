@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FCG.Contracts\FCG.Contracts.csproj" />
+    <PackageReference Include="FCG.Shared.Contracts" Version="1.1.0" />
     <ProjectReference Include="..\FCGCatalog.Domain\FCGCatalog.Domain.csproj" />
   </ItemGroup>
 
