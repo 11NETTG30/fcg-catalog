@@ -15,6 +15,8 @@ builder.Services.ConfigureModelStateInvalid();
 
 var app = builder.Build();
 
+await app.AplicarMigracoesAsync();
+
 if (app.Environment.IsDevelopment())
 {
 	app.UseDocumentation();

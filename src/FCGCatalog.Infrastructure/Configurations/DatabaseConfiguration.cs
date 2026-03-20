@@ -1,8 +1,10 @@
 ﻿using FCGCatalog.Infrastructure.Persistence;
 using FCGCatalog.Infrastructure.Persistence.Interceptors;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FCGCatalog.Infrastructure.Configurations;
 
@@ -30,5 +32,31 @@ public static class DatabaseConfiguration
 				})
 				.AddInterceptors(serviceProvider.GetRequiredService<AuditoriaSaveChangesInterceptor>())
 		);
+	}
+
+	public static async Task AplicarMigracoesAsync(this WebApplication app)
+	{
+		const int maxTentativas = 10;
+		const int esperaSegundos = 5;
+
+		using var scope = app.Services.CreateScope();
+		var db = scope.ServiceProvider.GetRequiredService<CatalogoDbContext>();
+		var logger = scope.ServiceProvider.GetRequiredService<ILogger<CatalogoDbContext>>();
+
+		for (int tentativa = 1; tentativa <= maxTentativas; tentativa++)
+		{
+			try
+			{
+				logger.LogInformation("Aplicando migrations (tentativa {Tentativa}/{Max})...", tentativa, maxTentativas);
+				await db.Database.MigrateAsync();
+				logger.LogInformation("Migrations aplicadas com sucesso.");
+				return;
+			}
+			catch (Exception ex) when (tentativa < maxTentativas)
+			{
+				logger.LogWarning(ex, "Banco indisponível. Aguardando {Segundos}s antes de tentar novamente...", esperaSegundos);
+				await Task.Delay(TimeSpan.FromSeconds(esperaSegundos));
+			}
+		}
 	}
 }
