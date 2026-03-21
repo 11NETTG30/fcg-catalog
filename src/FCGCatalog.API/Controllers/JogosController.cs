@@ -1,4 +1,5 @@
-﻿using FCGCatalog.Application.Features.Jogo.CriarJogo;
+﻿using FCGCatalog.API.Contracts.Jogo;
+using FCGCatalog.Application.Features.Jogo.CriarJogo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,15 @@ public sealed class JogosController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> Criar([FromBody] CriarJogoCommand request)
+    public async Task<IActionResult> Criar([FromBody] CriarJogoRequest request)
     {
-        var response = await _mediator.Send(request);
+        var command = new CriarJogoCommand(
+            Titulo: request.Titulo,
+            Descricao: request.Descricao,
+            Preco: request.Preco,
+            DataLancamento: request.DataLancamento
+		); 
+		var response = await _mediator.Send(command);
 
         return CreatedAtAction(nameof(ObterPorId), new { id = response.Id }, response);
     }

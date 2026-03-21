@@ -23,4 +23,8 @@
     <ProjectReference Include="..\FCGCatalog.IoC\FCGCatalog.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\BibliotecaUsuario\" />
+  </ItemGroup>
+
 </Project>
