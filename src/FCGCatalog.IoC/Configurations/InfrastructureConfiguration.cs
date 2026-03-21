@@ -2,7 +2,6 @@
 using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Abstractions;
 using FCGCatalog.Infrastructure.Configurations;
-using FCGCatalog.Infrastructure.Identidade.Configurations;
 using FCGCatalog.Infrastructure.Messaging;
 using FCGCatalog.Infrastructure.Persistence.Repositories;
 using FCGCatalog.Infrastructure.Shared;
