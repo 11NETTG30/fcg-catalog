@@ -1,8 +1,9 @@
+using FCGCatalog.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FCGCatalog.Infrastructure.Identidade.Configurations;
+namespace FCGCatalog.Infrastructure.Configurations;
 
 public static class AuthenticationConfiguration
 {
