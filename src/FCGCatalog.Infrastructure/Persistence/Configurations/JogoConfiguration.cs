@@ -24,6 +24,10 @@ public class JogoConfiguration : IEntityTypeConfiguration<Jogo>
 			.HasMaxLength(200)
 			.IsRequired();
 
+		builder.HasIndex(j => j.Titulo)
+			.IsUnique()
+			.HasDatabaseName("ux_jogos_titulo");
+
 		// Descricao
 		builder.Property(j => j.Descricao)
 			.HasColumnName("descricao")

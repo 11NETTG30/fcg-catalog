@@ -9,15 +9,17 @@ namespace FCGCatalog.Application.Features.BibliotecaUsuario.IniciarCompraJogo;
 public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogoCommand, Unit>
 {
 	private readonly IJogoRepository _jogoRepository;
+	private readonly IBibliotecaUsuarioRepository _bibliotecaUsuarioRepository;
 	private readonly IEventPublisher _eventPublisher;
 
-    public IniciarCompraJogoHandler(IJogoRepository jogoRepository, IEventPublisher eventPublisher)
-    {
-        _jogoRepository = jogoRepository;
-        _eventPublisher = eventPublisher;
-    }
+	public IniciarCompraJogoHandler(IJogoRepository jogoRepository, IBibliotecaUsuarioRepository bibliotecaUsuarioRepository, IEventPublisher eventPublisher)
+	{
+		_jogoRepository = jogoRepository;
+		_bibliotecaUsuarioRepository = bibliotecaUsuarioRepository;
+		_eventPublisher = eventPublisher;
+	}
 
-    public async Task<Unit> Handle(
+	public async Task<Unit> Handle(
 		IniciarCompraJogoCommand request,
 		CancellationToken cancellationToken)
 	{
@@ -27,6 +29,14 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 
 		if (jogo is null)
 			throw new ValidationException("Jogo não encontrado.");
+
+		var usuarioJaPossuiJogo = await _bibliotecaUsuarioRepository.ExistePorUsuarioIdEJogoId(
+			request.UsuarioId,
+			request.JogoId,
+			cancellationToken);
+
+		if (usuarioJaPossuiJogo)
+			throw new ValidationException("Usuário já possui esse jogo na biblioteca.");
 
 		var evento = new OrderPlacedEvent
 		(

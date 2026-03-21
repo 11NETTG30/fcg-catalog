@@ -21,4 +21,9 @@ public sealed class BibliotecaUsuarioRepository : IBibliotecaUsuarioRepository
     {
 		return _dbSet.AddAsync(item, cancellationToken).AsTask();
 	}
+
+	public Task<bool> ExistePorUsuarioIdEJogoId(Guid usuarioId, Guid jogoId, CancellationToken cancellationToken)
+	{
+		return _dbSet.AnyAsync(bu => bu.UsuarioId == usuarioId && bu.JogoId == jogoId, cancellationToken);
+	}
 }

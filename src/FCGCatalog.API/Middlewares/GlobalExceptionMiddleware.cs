@@ -48,14 +48,11 @@ public class GlobalExceptionMiddleware
 
 public static class GlobalExceptionMiddlewareExtensions
 {
-	extension(WebApplication app)
+	public static void UseGlobalExceptionMiddleware(this WebApplication app)
 	{
-		public void UseGlobalExceptionMiddleware()
-		{
-			if (app.Environment.IsDevelopment())
-				app.UseDeveloperExceptionPage();
-			else
-				app.UseMiddleware<GlobalExceptionMiddleware>();
-		}
+		if (app.Environment.IsDevelopment())
+			app.UseDeveloperExceptionPage();
+		else
+			app.UseMiddleware<GlobalExceptionMiddleware>();
 	}
 }

@@ -42,29 +42,63 @@ public class DomainExceptionMiddleware
 				"Conflito",
 				conflictException.Message);
 		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			Dictionary<string, string[]> errors = ObterErrrosEmDicionarioDoFluentValidation(ex);
+
+			await GerarProblemDetails(
+				context,
+				StatusCodes.Status400BadRequest,
+				"Erro de validação",
+				extensions: new Dictionary<string, object>
+				{
+					["errors"] = errors
+				});
+		}
 	}
 
-	private async Task GerarProblemDetails(HttpContext context, int statusCode, string title, string detail)
+	private async Task GerarProblemDetails(
+		HttpContext context,
+		int statusCode,
+		string title,
+		string? detail = null,
+		IDictionary<string, object>? extensions = null)
 	{
-		ProblemDetails problemDetails = _problemDetailsFactory.CreateProblemDetails(context);
+		var problemDetails = _problemDetailsFactory.CreateProblemDetails(context);
+
 		problemDetails.Status = statusCode;
 		problemDetails.Title = title;
 		problemDetails.Detail = detail;
+
+		if (extensions != null)
+		{
+			foreach (var item in extensions)
+			{
+				problemDetails.Extensions[item.Key] = item.Value;
+			}
+		}
 
 		context.Response.StatusCode = statusCode;
 		context.Response.ContentType = "application/problem+json";
 
 		await context.Response.WriteAsJsonAsync(problemDetails);
 	}
+
+	private static Dictionary<string, string[]> ObterErrrosEmDicionarioDoFluentValidation(FluentValidation.ValidationException ex)
+	{
+		return ex.Errors
+			.GroupBy(e => e.PropertyName)
+			.ToDictionary(
+				g => g.Key,
+				g => g.Select(e => e.ErrorMessage).ToArray()
+			);
+	}
 }
 
 public static class DomainExceptionMiddlewareExtensions
 {
-	extension(IApplicationBuilder app)
+	public static void UseDomainExceptionMiddleware(this IApplicationBuilder app)
 	{
-		public void UseDomainExceptionMiddleware()
-		{
-			app.UseMiddleware<DomainExceptionMiddleware>();
-		}
+		app.UseMiddleware<DomainExceptionMiddleware>();
 	}
 }
