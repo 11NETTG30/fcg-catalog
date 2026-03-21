@@ -7,7 +7,8 @@
         string? Descricao,
         decimal Preco,
         DateTime? DataLancamento,
-        DateTime DataCriacao,
+        bool Ativo,
+		DateTime DataCriacao,
         DateTime? DataAtualizacao
 	);
 }

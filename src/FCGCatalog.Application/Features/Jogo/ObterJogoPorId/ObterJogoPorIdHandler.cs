@@ -26,6 +26,7 @@ namespace FCGCatalog.Application.Features.Jogo.ObterJogoPorId
 				Titulo: jogo.Titulo,
 				Descricao: jogo.Descricao,
 				Preco: jogo.Preco.Valor,
+				Ativo: jogo.Ativo,
 				DataLancamento: jogo.DataLancamento,
 				DataCriacao: jogo.DataCriacao,
 				DataAtualizacao: jogo.DataAtualizacao
