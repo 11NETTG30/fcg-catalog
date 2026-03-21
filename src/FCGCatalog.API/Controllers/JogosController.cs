@@ -1,5 +1,6 @@
 ﻿using FCGCatalog.API.Contracts.Jogo;
 using FCGCatalog.Application.Features.Jogo.CriarJogo;
+using FCGCatalog.Application.Features.Jogo.ObterJogo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,8 +36,12 @@ public sealed class JogosController : ControllerBase
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult ObterPorId(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public IActionResult ObterPorId(Guid id, CancellationToken cancellationToken)
+	{
+        var query = new ObterJogoPorIdQuery(id);
+        var response = _mediator.Send(query, cancellationToken);
+
+		return Ok(response);
+	}
 }

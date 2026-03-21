@@ -1,6 +1,4 @@
-﻿using FCGCatalog.Domain.Shared.Exceptions;
-
-namespace FCGCatalog.Domain.Shared.Abstractions
+﻿namespace FCGCatalog.Domain.Shared.Exceptions
 {
 	public class ValidationException : DomainException
 	{

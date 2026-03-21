@@ -1,9 +1,8 @@
-﻿using FCGCatalog.Application.Abstractions.Messaging;
-using FCG.Shared.Contracts.Events;
+﻿using FCG.Shared.Contracts.Events;
+using FCGCatalog.Application.Abstractions.Messaging;
 using FCGCatalog.Domain.Repositories;
+using FCGCatalog.Domain.Shared.Exceptions;
 using MediatR;
-using FCGCatalog.Domain.Shared.Abstractions;
-
 namespace FCGCatalog.Application.Features.BibliotecaUsuario.IniciarCompraJogo;
 
 public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogoCommand, Unit>
@@ -20,19 +19,19 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 	}
 
 	public async Task<Unit> Handle(
-		IniciarCompraJogoCommand request,
+		IniciarCompraJogoCommand command,
 		CancellationToken cancellationToken)
 	{
 		var jogo = await _jogoRepository.ObterPorId(
-			request.JogoId,
+			command.JogoId,
 			cancellationToken);
 
 		if (jogo is null)
 			throw new ValidationException("Jogo não encontrado.");
 
 		var usuarioJaPossuiJogo = await _bibliotecaUsuarioRepository.ExistePorUsuarioIdEJogoId(
-			request.UsuarioId,
-			request.JogoId,
+			command.UsuarioId,
+			command.JogoId,
 			cancellationToken);
 
 		if (usuarioJaPossuiJogo)
@@ -41,9 +40,9 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 		var evento = new OrderPlacedEvent
 		(
 			GameId: jogo.Id,
-			UserId: request.UsuarioId,
+			UserId: command.UsuarioId,
 			Price: jogo.Preco.Valor,
-			Email: request.Email
+			Email: command.Email
 		);
 
 		await _eventPublisher.PublishAsync(evento, cancellationToken);

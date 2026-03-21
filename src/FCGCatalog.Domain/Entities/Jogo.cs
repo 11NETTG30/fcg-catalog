@@ -1,4 +1,5 @@
 ﻿using FCGCatalog.Domain.Shared.Abstractions;
+using FCGCatalog.Domain.Shared.Exceptions;
 using FCGCatalog.Domain.ValueObjects;
 
 namespace FCGCatalog.Domain.Entities;

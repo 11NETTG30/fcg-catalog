@@ -1,6 +1,4 @@
-﻿using FCGCatalog.Domain.Shared.Abstractions;
-using FCGCatalog.Domain.Shared.Exceptions;
-using Microsoft.AspNetCore.Mvc;
+﻿using FCGCatalog.Domain.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace FCGCatalog.API.Middlewares;
@@ -41,6 +39,14 @@ public class DomainExceptionMiddleware
 				StatusCodes.Status409Conflict,
 				"Conflito",
 				conflictException.Message);
+		}
+		catch (NotFoundException notFoundException)
+		{
+			await GerarProblemDetails(
+				context,
+				StatusCodes.Status404NotFound,
+				"Recurso não encontrado",
+				notFoundException.Message);
 		}
 		catch (FluentValidation.ValidationException ex)
 		{

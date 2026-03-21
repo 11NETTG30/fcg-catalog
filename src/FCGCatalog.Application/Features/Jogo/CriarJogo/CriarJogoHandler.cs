@@ -16,19 +16,19 @@ public sealed class CriarJogoHandler : IRequestHandler<CriarJogoCommand, CriarJo
 	}
 
 	public async Task<CriarJogoResponse> Handle(
-		CriarJogoCommand request,
+		CriarJogoCommand command,
 		CancellationToken cancellationToken)
 	{
-		var jogoJaExiste = await _repository.ExistePorTitulo(request.Titulo, cancellationToken);
+		var jogoJaExiste = await _repository.ExistePorTitulo(command.Titulo, cancellationToken);
 
 		if (jogoJaExiste)
 			throw new ConflictException("Já existe um jogo com esse título.");
 
 		var jogo = JogoDomain.Criar(
-			titulo: request.Titulo,
-			descricao: request.Descricao,
-			preco: Preco.Criar(request.Preco),
-			dataLancamento: request.DataLancamento
+			titulo: command.Titulo,
+			descricao: command.Descricao,
+			preco: Preco.Criar(command.Preco),
+			dataLancamento: command.DataLancamento
 		);
 
 		await _repository.Adicionar(jogo, cancellationToken);
