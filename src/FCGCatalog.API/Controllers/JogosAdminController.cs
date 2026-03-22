@@ -1,6 +1,8 @@
 ﻿using FCGCatalog.API.Contracts.Jogo;
+using FCGCatalog.Application.Features.Jogo.AtivarJogo;
 using FCGCatalog.Application.Features.Jogo.CriarJogo;
 using FCGCatalog.Application.Features.Jogo.EditarJogo;
+using FCGCatalog.Application.Features.Jogo.InativarJogo;
 using FCGCatalog.Application.Features.Jogo.ListarJogos;
 using FCGCatalog.Application.Features.Jogo.ObterJogoAdminPorId;
 using FCGCatalog.Application.Features.Jogo.Shared;
@@ -57,6 +59,24 @@ namespace FCGCatalog.API.Controllers
 
 			await _mediator.Send(command, cancellationToken);
 
+			return NoContent();
+		}
+
+		[HttpPatch("{id:guid}/ativar")]
+		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> Ativar(Guid id, CancellationToken cancellationToken)
+		{
+			await _mediator.Send(new AtivarJogoCommand(Id: id), cancellationToken);
+			return NoContent();
+		}
+
+		[HttpPatch("{id:guid}/desativar")]
+		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> Desativar(Guid id, CancellationToken cancellationToken)
+		{
+			await _mediator.Send(new DesativarJogoCommand(Id: id), cancellationToken);
 			return NoContent();
 		}
 

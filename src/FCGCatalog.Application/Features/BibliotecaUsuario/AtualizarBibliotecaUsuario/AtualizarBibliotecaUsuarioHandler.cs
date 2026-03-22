@@ -1,5 +1,5 @@
 using FCGCatalog.Domain.Repositories;
-using FCGCatalog.Domain.Shared.Abstractions;
+using FCGCatalog.Domain.Shared.Exceptions;
 using MediatR;
 
 namespace FCGCatalog.Application.Features.BibliotecaUsuario.AtualizarBibliotecaUsuario;

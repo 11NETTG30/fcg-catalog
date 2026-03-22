@@ -1,4 +1,4 @@
-﻿using FCGCatalog.API.Contracts.Jogo;
+﻿using FCGCatalog.API.Contracts.BibliotecaUsuario;
 using FCGCatalog.Application.Abstractions.Security;
 using FCGCatalog.Application.Features.BibliotecaUsuario.AtualizarBibliotecaUsuario;
 using FCGCatalog.Application.Features.BibliotecaUsuario.AtualizarStatusPagamento;
