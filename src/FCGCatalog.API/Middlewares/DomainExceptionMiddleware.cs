@@ -1,4 +1,5 @@
-﻿using FCGCatalog.Domain.Shared.Exceptions;
+﻿using FCGCatalog.Application.Abstractions.Security;
+using FCGCatalog.Domain.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace FCGCatalog.API.Middlewares;
@@ -47,6 +48,14 @@ public class DomainExceptionMiddleware
 				StatusCodes.Status404NotFound,
 				"Recurso não encontrado",
 				notFoundException.Message);
+		}
+		catch (UnauthorizedException unauthorizedException)
+		{
+			await GerarProblemDetails(
+				context,
+				StatusCodes.Status401Unauthorized,
+				"Não autorizado",
+				unauthorizedException.Message);
 		}
 		catch (FluentValidation.ValidationException ex)
 		{

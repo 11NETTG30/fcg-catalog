@@ -11,5 +11,9 @@ public sealed class IniciarCompraJogoValidator : AbstractValidator<IniciarCompra
 
 		RuleFor(x => x.UsuarioId)
 			.NotEmpty();
+
+		RuleFor(x => x.Email)
+			.NotEmpty()
+			.EmailAddress();
 	}
 }

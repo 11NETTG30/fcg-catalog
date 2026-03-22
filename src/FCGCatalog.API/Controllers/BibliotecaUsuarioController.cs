@@ -1,4 +1,5 @@
 ﻿using FCGCatalog.API.Contracts.Jogo;
+using FCGCatalog.Application.Abstractions.Security;
 using FCGCatalog.Application.Features.BibliotecaUsuario.AtualizarBibliotecaUsuario;
 using FCGCatalog.Application.Features.BibliotecaUsuario.AtualizarStatusPagamento;
 using FCGCatalog.Application.Features.BibliotecaUsuario.IniciarCompraJogo;
@@ -6,7 +7,6 @@ using FCGCatalog.Application.Features.BibliotecaUsuario.ObterBibliotecaUsuario;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace FCGCatalog.API.Controllers;
 
@@ -15,64 +15,65 @@ namespace FCGCatalog.API.Controllers;
 [Authorize]
 public sealed class BibliotecaUsuarioController : ControllerBase
 {
-    private readonly IMediator _mediator;
+	private readonly IMediator _mediator;
+	private readonly IUsuarioContexto _usuarioContexto;
 
-    public BibliotecaUsuarioController(IMediator mediator)
+    public BibliotecaUsuarioController(IMediator mediator, IUsuarioContexto usuarioContexto)
     {
         _mediator = mediator;
+        _usuarioContexto = usuarioContexto;
     }
 
     [HttpGet("{usuarioId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ObterPorUsuario(Guid usuarioId, CancellationToken cancellationToken)
-    {
-        var query = new ObterBibliotecaUsuarioQuery(usuarioId);
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> ObterPorUsuario(Guid usuarioId, CancellationToken cancellationToken)
+	{
+		var query = new ObterBibliotecaUsuarioQuery(usuarioId);
 
-        var response = await _mediator.Send(query, cancellationToken);
-
-        return Ok(response);
-    }
-    
-	  [HttpPost("{usuarioId:guid}/comprar")]
-	  [ProducesResponseType(StatusCodes.Status202Accepted)]
-	  public async Task<IActionResult> Comprar(Guid usuarioId, [FromBody] IniciarCompraJogoRequest request, CancellationToken cancellationToken)
-	  {
-        var email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value ?? string.Empty;
-
-        var command = new IniciarCompraJogoCommand(
-          UsuarioId: usuarioId,
-          JogoId: request.JogoId,
-          Email: email
-        );
-
-        var response = await _mediator.Send(command, cancellationToken);
+		var response = await _mediator.Send(query, cancellationToken);
 
 		return Ok(response);
-    }
+	}
 
-    [HttpPut("{usuarioId:guid}/{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Atualizar(Guid usuarioId, Guid id, [FromBody] AtualizarBibliotecaUsuarioRequest request, CancellationToken cancellationToken)
-    {
-        var command = new AtualizarBibliotecaUsuarioCommand(usuarioId, id, request.JogoId);
+	[HttpPost("comprar")]
+	[ProducesResponseType(StatusCodes.Status202Accepted)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> Comprar([FromBody] IniciarCompraJogoRequest request, CancellationToken cancellationToken)
+	{
+		var command = new IniciarCompraJogoCommand(
+			UsuarioId: _usuarioContexto.ObterUsuarioIdValidado(),
+			JogoId: request.JogoId,
+			Email: _usuarioContexto.ObterEmailValidado()
+		);
 
-        await _mediator.Send(command, cancellationToken);
+		var response = await _mediator.Send(command, cancellationToken);
+
+		return Accepted(response);
+	}
+
+	[HttpPut("{usuarioId:guid}/{id:guid}")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> Atualizar(Guid usuarioId, Guid id, [FromBody] AtualizarBibliotecaUsuarioRequest request, CancellationToken cancellationToken)
+	{
+		var command = new AtualizarBibliotecaUsuarioCommand(usuarioId, id, request.JogoId);
+
+		await _mediator.Send(command, cancellationToken);
 
 		return NoContent();
-    }
+	}
 
-    [HttpPatch("{usuarioId:guid}/{id:guid}/status")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> AtualizarStatus(Guid usuarioId, Guid id, [FromBody] AtualizarStatusPagamentoRequest request, CancellationToken cancellationToken)
-    {
-        var command = new AtualizarStatusPagamentoCommand(usuarioId, id, request.StatusPagamento);
+	[HttpPatch("{usuarioId:guid}/{id:guid}/status")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> AtualizarStatus(Guid usuarioId, Guid id, [FromBody] AtualizarStatusPagamentoRequest request, CancellationToken cancellationToken)
+	{
+		var command = new AtualizarStatusPagamentoCommand(usuarioId, id, request.StatusPagamento);
 
-        await _mediator.Send(command, cancellationToken);
+		await _mediator.Send(command, cancellationToken);
 
 		return NoContent();
-    }
+	}
 
 }

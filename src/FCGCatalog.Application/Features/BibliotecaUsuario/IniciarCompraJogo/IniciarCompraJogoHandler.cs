@@ -2,6 +2,7 @@
 using FCGCatalog.Application.Abstractions.Messaging;
 using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Exceptions;
+using FCGCatalog.Domain.ValueObjects;
 using MediatR;
 namespace FCGCatalog.Application.Features.BibliotecaUsuario.IniciarCompraJogo;
 
@@ -11,14 +12,14 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 	private readonly IBibliotecaUsuarioRepository _bibliotecaUsuarioRepository;
 	private readonly IEventPublisher _eventPublisher;
 
-	public IniciarCompraJogoHandler(IJogoRepository jogoRepository, IBibliotecaUsuarioRepository bibliotecaUsuarioRepository, IEventPublisher eventPublisher)
-	{
-		_jogoRepository = jogoRepository;
-		_bibliotecaUsuarioRepository = bibliotecaUsuarioRepository;
-		_eventPublisher = eventPublisher;
-	}
+    public IniciarCompraJogoHandler(IJogoRepository jogoRepository, IBibliotecaUsuarioRepository bibliotecaUsuarioRepository, IEventPublisher eventPublisher)
+    {
+        _jogoRepository = jogoRepository;
+        _bibliotecaUsuarioRepository = bibliotecaUsuarioRepository;
+        _eventPublisher = eventPublisher;
+    }
 
-	public async Task<Unit> Handle(
+    public async Task<Unit> Handle(
 		IniciarCompraJogoCommand command,
 		CancellationToken cancellationToken)
 	{
@@ -30,19 +31,21 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 			throw new ValidationException("Jogo não encontrado.");
 
 		var usuarioJaPossuiJogo = await _bibliotecaUsuarioRepository.ExistePorUsuarioIdEJogoId(
-			command.UsuarioId,
-			command.JogoId,
+			usuarioId: command.UsuarioId,
+			jogoId: command.JogoId,
 			cancellationToken);
 
 		if (usuarioJaPossuiJogo)
 			throw new ValidationException("Usuário já possui esse jogo na biblioteca.");
+
+		var emailUsuario = Email.Criar(command.Email);
 
 		var evento = new OrderPlacedEvent
 		(
 			GameId: jogo.Id,
 			UserId: command.UsuarioId,
 			Price: jogo.Preco.Valor,
-			Email: command.Email
+			Email: emailUsuario.Valor
 		);
 
 		await _eventPublisher.PublishAsync(evento, cancellationToken);

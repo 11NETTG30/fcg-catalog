@@ -8,17 +8,19 @@ namespace FCGCatalog.Application.Features.Jogo.ObterJogoPorId
     public sealed class ObterJogoPorIdHandler : IRequestHandler<ObterJogoPorIdQuery, ObterJogoPorIdResponse>
 	{
 		private readonly IJogoRepository _repository;
-		public ObterJogoPorIdHandler(IJogoRepository repository)
-		{
-			_repository = repository;
-		}
-		public async Task<ObterJogoPorIdResponse> Handle(
+
+        public ObterJogoPorIdHandler(IJogoRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public async Task<ObterJogoPorIdResponse> Handle(
 			ObterJogoPorIdQuery query,
 			CancellationToken cancellationToken)
 		{
 			var jogo = await _repository.ObterPorId(query.Id, cancellationToken);
 
-			if (jogo is null)
+			if ((jogo is null) || (!jogo.Ativo && !query.UsuarioEhAdmin))
 				throw new NotFoundException($"O jogo de id {query.Id} não foi encontrado.");
 
 			return new ObterJogoPorIdResponse(

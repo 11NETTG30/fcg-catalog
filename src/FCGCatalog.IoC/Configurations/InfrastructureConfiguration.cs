@@ -1,10 +1,12 @@
 ﻿using FCGCatalog.Application.Abstractions.Messaging;
+using FCGCatalog.Application.Abstractions.Security;
 using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Abstractions;
 using FCGCatalog.Infrastructure.Configurations;
 using FCGCatalog.Infrastructure.Messaging;
 using FCGCatalog.Infrastructure.Persistence.Repositories;
 using FCGCatalog.Infrastructure.Shared;
+using FCGCatalog.Infrastructure.Shared.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,12 +18,13 @@ public static class InfrastructureConfiguration
 		this IServiceCollection services,
 		IConfiguration configuration)
 	{
-		services.AddJwtAuthentication(configuration);
+		services.ConfigureJwtAuthentication(configuration);
 		services.ConfigureMessaging(configuration);
 		services.ConfigureDatabase(configuration);
 		services.ConfigureRepositories();
 
 		services.AddScoped<IEventPublisher, EventPublisherMassTransit>();
+		services.AddScoped<IUsuarioContexto, UsuarioContexto>();
 		services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));
 
 		return services;

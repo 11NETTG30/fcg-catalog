@@ -1,5 +1,4 @@
-﻿using FCGCatalog.API.Contracts.Jogo;
-using FCGCatalog.Application.Features.Jogo.CriarJogo;
+﻿using FCGCatalog.Application.Abstractions.Security;
 using FCGCatalog.Application.Features.Jogo.ObterJogo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,34 +12,24 @@ namespace FCGCatalog.API.Controllers;
 public sealed class JogosController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IUsuarioContexto _usuarioContexto;
 
-    public JogosController(IMediator mediator)
+    public JogosController(IMediator mediator, IUsuarioContexto usuarioContexto)
     {
         _mediator = mediator;
-    }
-
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> Criar([FromBody] CriarJogoRequest request)
-    {
-        var command = new CriarJogoCommand(
-            Titulo: request.Titulo,
-            Descricao: request.Descricao,
-            Preco: request.Preco,
-            DataLancamento: request.DataLancamento
-		); 
-		var response = await _mediator.Send(command);
-
-        return CreatedAtAction(nameof(ObterPorId), new { id = response.Id }, response);
+        _usuarioContexto = usuarioContexto;
     }
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public IActionResult ObterPorId(Guid id, CancellationToken cancellationToken)
+	public async Task<IActionResult> ObterPorId(Guid id, CancellationToken cancellationToken)
 	{
-        var query = new ObterJogoPorIdQuery(id);
-        var response = _mediator.Send(query, cancellationToken);
+        var query = new ObterJogoPorIdQuery(
+            Id: id,
+            UsuarioEhAdmin: _usuarioContexto.EhAdmin
+		);
+        var response = await _mediator.Send(query, cancellationToken);
 
 		return Ok(response);
 	}
