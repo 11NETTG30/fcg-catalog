@@ -44,4 +44,9 @@ public sealed class JogoRepository : IJogoRepository
 			.ToListAsync(cancellationToken);
 	}
 
+	public void Atualizar(Jogo jogo, CancellationToken cancellationToken)
+	{
+		_dbSet.Update(jogo);
+	}
+
 }

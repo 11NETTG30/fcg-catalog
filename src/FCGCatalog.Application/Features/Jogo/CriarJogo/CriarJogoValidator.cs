@@ -1,21 +1,15 @@
-﻿using FluentValidation;
+﻿using FCGCatalog.Application.Features.Jogo.Shared;
 
 namespace FCGCatalog.Application.Features.Jogo.CriarJogo;
 
-public sealed class CriarJogoValidator : AbstractValidator<CriarJogoCommand>
+public sealed class CriarJogoValidator : JogoValidatorBase<CriarJogoCommand>
 {
 	public CriarJogoValidator()
 	{
-		RuleFor(x => x.Titulo)
-			.NotEmpty()
-			.MaximumLength(200);
-
-		RuleFor(x => x.Descricao)
-			.MaximumLength(1000);
-
-		RuleFor(x => x.Preco)
-			.GreaterThan(0)
-			.PrecisionScale(18, 2, false)
-			.WithMessage("Preço deve ser um valor positivo com no máximo 2 casas decimais e até 18 dígitos no total.");
+		AplicarRegrasJogo(
+			titulo: x => x.Titulo,
+			descricao: x => x.Descricao,
+			preco: x => x.Preco
+		);
 	}
 }

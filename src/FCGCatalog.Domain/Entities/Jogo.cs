@@ -70,9 +70,21 @@ public sealed class Jogo : Entity, IAggregateRoot, IAuditavel
 	(
 		string titulo,
 		Preco preco,
-		string? descricao = null,
+		string? descricao = null, 
 		DateTime? dataLancamento = null
 	) => new(titulo, preco, descricao, dataLancamento);
+
+	public void Editar(
+		string titulo,
+		string? descricao,
+		Preco preco,
+		DateTime? dataLancamento)
+	{
+		SetTitulo(titulo);
+		SetDescricao(descricao);
+		SetPreco(preco);
+		SetDataLancamento(dataLancamento);
+	}
 
 	public void Ativar() =>
 		Ativo = true;

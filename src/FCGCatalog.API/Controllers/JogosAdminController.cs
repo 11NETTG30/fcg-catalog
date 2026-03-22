@@ -1,5 +1,6 @@
 ﻿using FCGCatalog.API.Contracts.Jogo;
 using FCGCatalog.Application.Features.Jogo.CriarJogo;
+using FCGCatalog.Application.Features.Jogo.EditarJogo;
 using FCGCatalog.Application.Features.Jogo.ListarJogos;
 using FCGCatalog.Application.Features.Jogo.ObterJogoAdminPorId;
 using FCGCatalog.Application.Features.Jogo.Shared;
@@ -35,6 +36,28 @@ namespace FCGCatalog.API.Controllers
 			var response = await _mediator.Send(command);
 
 			return CreatedAtAction(nameof(JogosController.ObterPorId), new { id = response.Id }, response);
+		}
+
+		[HttpPut("{id:guid}")]
+		[ProducesResponseType(StatusCodes.Status204NoContent)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status409Conflict)]
+		public async Task<IActionResult> Editar(
+			Guid id,
+			[FromBody] EditarJogoRequest request,
+			CancellationToken cancellationToken)
+		{
+			var command = new EditarJogoCommand(
+				Id: id,
+				Titulo: request.Titulo,
+				Descricao: request.Descricao,
+				Preco: request.Preco,
+				DataLancamento: request.DataLancamento
+			);
+
+			await _mediator.Send(command, cancellationToken);
+
+			return NoContent();
 		}
 
 		[HttpGet]

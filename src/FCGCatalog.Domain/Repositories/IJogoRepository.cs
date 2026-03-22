@@ -9,4 +9,5 @@ public interface IJogoRepository : IRepository<Jogo>
 	Task<bool> ExistePorTitulo(string titulo, CancellationToken cancellationToken);
 	Task<Jogo?> ObterPorId(Guid id, CancellationToken cancellationToken);
 	Task<IEnumerable<Jogo>> ObterJogos(bool somenteAtivos, CancellationToken cancellationToken);
+	void Atualizar(Jogo jogo, CancellationToken cancellationToken);
 }
