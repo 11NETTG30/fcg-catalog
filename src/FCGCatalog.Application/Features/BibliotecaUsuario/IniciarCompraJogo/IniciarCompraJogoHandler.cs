@@ -45,7 +45,8 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 			GameId: jogo.Id,
 			UserId: command.UsuarioId,
 			Price: jogo.Preco.Valor,
-			Email: emailUsuario.Valor
+			Email: emailUsuario.Valor,
+			TituloJogo: jogo.Titulo
 		);
 
 		await _eventPublisher.PublishAsync(evento, cancellationToken);
