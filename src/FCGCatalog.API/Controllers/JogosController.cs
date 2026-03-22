@@ -22,17 +22,13 @@ public sealed class JogosController : ControllerBase
         _usuarioContexto = usuarioContexto;
     }
 
-    [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+	[HttpGet("{id:guid}")]
+	[ProducesResponseType(typeof(JogoPublicoResponse), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> ObterPorId(Guid id, CancellationToken cancellationToken)
 	{
-        var query = new ObterJogoPorIdQuery(
-            Id: id,
-            UsuarioEhAdmin: _usuarioContexto.EhAdmin
-		);
-        var response = await _mediator.Send(query, cancellationToken);
-
+		var query = new ObterJogoPorIdQuery(Id: id);
+		var response = await _mediator.Send(query, cancellationToken);
 		return Ok(response);
 	}
 

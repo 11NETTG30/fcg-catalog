@@ -1,7 +1,7 @@
 ﻿using FCGCatalog.API.Contracts.Jogo;
 using FCGCatalog.Application.Features.Jogo.CriarJogo;
 using FCGCatalog.Application.Features.Jogo.ListarJogos;
-using FCGCatalog.Application.Features.Jogo.ObterJogo;
+using FCGCatalog.Application.Features.Jogo.ObterJogoAdminPorId;
 using FCGCatalog.Application.Features.Jogo.Shared;
 using FCGCatalog.Infrastructure.Shared.Security;
 using MediatR;
@@ -23,7 +23,7 @@ namespace FCGCatalog.API.Controllers
 		}
 
 		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status201Created)]
+		[ProducesResponseType(typeof(JogoAdminResponse), StatusCodes.Status201Created)]
 		public async Task<IActionResult> Criar([FromBody] CriarJogoRequest request)
 		{
 			var command = new CriarJogoCommand(
@@ -42,6 +42,16 @@ namespace FCGCatalog.API.Controllers
 		public async Task<IActionResult> Listar(CancellationToken cancellationToken)
 		{
 			var query = new ListarJogosQuery();
+			var response = await _mediator.Send(query, cancellationToken);
+			return Ok(response);
+		}
+
+		[HttpGet("{id:guid}")]
+		[ProducesResponseType(typeof(JogoAdminResponse), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> ObterPorId(Guid id, CancellationToken cancellationToken)
+		{
+			var query = new ObterJogoAdminPorIdQuery(Id: id);
 			var response = await _mediator.Send(query, cancellationToken);
 			return Ok(response);
 		}
