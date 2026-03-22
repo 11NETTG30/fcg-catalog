@@ -35,4 +35,13 @@ public sealed class JogoRepository : IJogoRepository
 		return await _dbSet.FirstOrDefaultAsync(j => j.Id == id, cancellationToken);
 	}
 
+	public async Task<IEnumerable<Jogo>> ObterJogos(
+		bool somenteAtivos,
+		CancellationToken cancellationToken)
+	{
+		return await _dbSet
+			.Where(j => !somenteAtivos || j.Ativo)
+			.ToListAsync(cancellationToken);
+	}
+
 }

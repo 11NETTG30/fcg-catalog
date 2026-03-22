@@ -1,6 +1,8 @@
 ﻿using FCGCatalog.API.Contracts.Jogo;
 using FCGCatalog.Application.Features.Jogo.CriarJogo;
+using FCGCatalog.Application.Features.Jogo.ListarJogos;
 using FCGCatalog.Application.Features.Jogo.ObterJogo;
+using FCGCatalog.Application.Features.Jogo.Shared;
 using FCGCatalog.Infrastructure.Shared.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +35,15 @@ namespace FCGCatalog.API.Controllers
 			var response = await _mediator.Send(command);
 
 			return CreatedAtAction(nameof(JogosController.ObterPorId), new { id = response.Id }, response);
+		}
+
+		[HttpGet]
+		[ProducesResponseType(typeof(IEnumerable<JogoAdminResponse>), StatusCodes.Status200OK)]
+		public async Task<IActionResult> Listar(CancellationToken cancellationToken)
+		{
+			var query = new ListarJogosQuery();
+			var response = await _mediator.Send(query, cancellationToken);
+			return Ok(response);
 		}
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using FCGCatalog.Application.Abstractions.Security;
+using FCGCatalog.Application.Features.Jogo.ListarJogosDisponiveis;
 using FCGCatalog.Application.Features.Jogo.ObterJogo;
+using FCGCatalog.Application.Features.Jogo.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,15 @@ public sealed class JogosController : ControllerBase
 		);
         var response = await _mediator.Send(query, cancellationToken);
 
+		return Ok(response);
+	}
+
+	[HttpGet]
+	[ProducesResponseType(typeof(IEnumerable<JogoPublicoResponse>), StatusCodes.Status200OK)]
+	public async Task<IActionResult> Listar(CancellationToken cancellationToken)
+	{
+		var query = new ListarJogosDisponiveisQuery();
+		var response = await _mediator.Send(query, cancellationToken);
 		return Ok(response);
 	}
 }
