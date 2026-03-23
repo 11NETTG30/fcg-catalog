@@ -27,7 +27,7 @@ if (app.Configuration.GetValue<bool>("Documentacao:Habilitada"))
 app.UseGlobalExceptionMiddleware();
 app.UseDomainExceptionMiddleware();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
