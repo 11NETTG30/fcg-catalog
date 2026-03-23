@@ -1,8 +1,14 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".dockerignore" />
+    <File Path=".env" />
+    <File Path=".env.example" />
+    <File Path=".gitignore" />
+    <File Path="docker-compose.yaml" />
     <File Path="Dockerfile" />
     <File Path="nuget.config" />
+    <File Path="nuget_token.example.txt" />
+    <File Path="nuget_token.txt" />
   </Folder>
   <Folder Name="/Solution Items/.github/" />
   <Folder Name="/Solution Items/.github/workflows/">

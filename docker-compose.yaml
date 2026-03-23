@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:18.1
+    container_name: fcg-postgres
+    environment:
+      POSTGRES_USER: ${Postgres_User}
+      POSTGRES_PASSWORD: ${Postgres_Password}
+      POSTGRES_DB: ${Postgres_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - fcg-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: fcg-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RabbitMQ__Username}
+      RABBITMQ_DEFAULT_PASS: ${RabbitMQ__Password}
+    networks:
+      - fcg-network
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  catalog-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - nuget_token
+    # image: ghcr.io/11nettg30/fcg-catalog-api:latest
+    container_name: catalog-api
+    networks:
+      - fcg-network
+    environment:
+      Documentacao__Habilitada: "true"
+    env_file: 
+      - .env
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on: 
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  fcg-network:
+    driver: bridge
+
+secrets:
+  nuget_token:
+    file: ./nuget_token.txt
