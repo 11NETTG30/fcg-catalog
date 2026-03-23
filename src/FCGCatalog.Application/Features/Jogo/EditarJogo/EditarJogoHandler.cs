@@ -8,12 +8,10 @@ namespace FCGCatalog.Application.Features.Jogo.EditarJogo
 {
 	public sealed class EditarJogoHandler : IRequestHandler<EditarJogoCommand, Unit>
 	{
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly IJogoRepository _repository;
 
-        public EditarJogoHandler(IUnitOfWork unitOfWork, IJogoRepository repository)
+        public EditarJogoHandler(IJogoRepository repository)
         {
-            _unitOfWork = unitOfWork;
             _repository = repository;
         }
 
@@ -38,7 +36,7 @@ namespace FCGCatalog.Application.Features.Jogo.EditarJogo
 
 			_repository.Atualizar(jogo, cancellationToken);
 
-			await _unitOfWork.Commit(cancellationToken);
+			await _repository.UnitOfWork.Commit(cancellationToken);
 
 			return Unit.Value;
 		}

@@ -1,22 +1,19 @@
 ﻿using FCGCatalog.Domain.Repositories;
 using FCGCatalog.Domain.Shared.Exceptions;
-using FCGCatalog.Domain.Shared.Uow;
 using MediatR;
 
 namespace FCGCatalog.Application.Features.Jogo.AtivarJogo
 {
 	public sealed class AtivarJogoHandler : IRequestHandler<AtivarJogoCommand, Unit>
 	{
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly IJogoRepository _repository;
 
-		public AtivarJogoHandler(IUnitOfWork unitOfWork, IJogoRepository repository)
-		{
-			_unitOfWork = unitOfWork;
-			_repository = repository;
-		}
+        public AtivarJogoHandler(IJogoRepository repository)
+        {
+            _repository = repository;
+        }
 
-		public async Task<Unit> Handle(AtivarJogoCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AtivarJogoCommand command, CancellationToken cancellationToken)
 		{
 			var jogo = await _repository.ObterPorId(command.Id, cancellationToken);
 
@@ -26,7 +23,7 @@ namespace FCGCatalog.Application.Features.Jogo.AtivarJogo
 			jogo.Ativar();
 
 			_repository.Atualizar(jogo, cancellationToken);
-			await _unitOfWork.Commit(cancellationToken);
+			await _repository.UnitOfWork.Commit(cancellationToken);
 
 			return Unit.Value;
 		}
