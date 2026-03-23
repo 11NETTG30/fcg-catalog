@@ -9,6 +9,7 @@
     <File Path="nuget.config" />
     <File Path="nuget_token.example.txt" />
     <File Path="nuget_token.txt" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/Solution Items/.github/" />
   <Folder Name="/Solution Items/.github/workflows/">
