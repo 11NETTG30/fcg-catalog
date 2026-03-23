@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
 
 namespace FCGCatalog.Infrastructure.Configurations;
 
@@ -29,7 +28,7 @@ public static class SecurityConfiguration
                 options.Audience = configuration["Jwt:Audiencia"];
                 options.RequireHttpsMetadata = false;
                 options.MapInboundClaims = false;
-                options.TokenValidationParameters.RoleClaimType = ClaimTypes.Role;
+                options.TokenValidationParameters.RoleClaimType = "role";
 			});
 
         services.AddAuthorization();

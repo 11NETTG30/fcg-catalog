@@ -1,10 +1,9 @@
 using FCGCatalog.Domain.Repositories;
-using FCGCatalog.Domain.Shared.Abstractions;
 using MediatR;
 
 namespace FCGCatalog.Application.Features.BibliotecaUsuario.ObterBibliotecaUsuario;
 
-public sealed class ObterBibliotecaUsuarioHandler : IRequestHandler<ObterBibliotecaUsuarioQuery, ObterBibliotecaUsuarioResponse>
+public sealed class ObterBibliotecaUsuarioHandler : IRequestHandler<ObterBibliotecaUsuarioQuery, IEnumerable<ObterBibliotecaUsuarioResponse>>
 {
 	private readonly IBibliotecaUsuarioRepository _biblioteca;
 
@@ -13,12 +12,15 @@ public sealed class ObterBibliotecaUsuarioHandler : IRequestHandler<ObterBibliot
 		_biblioteca = biblioteca;
 	}
 
-	public async Task<ObterBibliotecaUsuarioResponse> Handle(
+	public async Task<IEnumerable<ObterBibliotecaUsuarioResponse>> Handle(
 		ObterBibliotecaUsuarioQuery request,
 		CancellationToken cancellationToken)
 	{
-		// Implementação simplificada - você pode melhorar com queries mais sofisticadas
-		// Para este exemplo, retornamos um erro se o usuário não for encontrado
-		throw new NotImplementedException("Método de obtenção de biblioteca do usuário não implementado no repositório");
+		var itens = await _biblioteca.ObterPorUsuarioId(request.UsuarioId, cancellationToken);
+
+		return itens.Select(b => new ObterBibliotecaUsuarioResponse(
+			b.JogoId,
+			b.Jogo?.Titulo ?? string.Empty,
+			b.DataCompra));
 	}
 }

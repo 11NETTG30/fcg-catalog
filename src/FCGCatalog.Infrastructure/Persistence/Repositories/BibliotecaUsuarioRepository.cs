@@ -26,4 +26,13 @@ public sealed class BibliotecaUsuarioRepository : IBibliotecaUsuarioRepository
 	{
 		return _dbSet.AnyAsync(bu => bu.UsuarioId == usuarioId && bu.JogoId == jogoId, cancellationToken);
 	}
+
+	public async Task<IEnumerable<BibliotecaUsuario>> ObterPorUsuarioId(Guid usuarioId, CancellationToken cancellationToken)
+	{
+		return await _dbSet
+			.AsNoTracking()
+			.Include(b => b.Jogo)
+			.Where(b => b.UsuarioId == usuarioId)
+			.ToListAsync(cancellationToken);
+	}
 }
