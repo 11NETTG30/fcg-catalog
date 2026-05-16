@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="FCG.Shared.Contracts" Version="1.2.0" />
     <ProjectReference Include="..\FCGCatalog.Domain\FCGCatalog.Domain.csproj" />
+    <PackageReference Include="FCG.Shared.Domain" Version="1.1.0" />
   </ItemGroup>
 
 </Project>

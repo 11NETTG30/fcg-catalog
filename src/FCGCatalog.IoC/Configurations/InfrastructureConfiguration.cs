@@ -7,6 +7,7 @@ using FCGCatalog.Infrastructure.Messaging;
 using FCGCatalog.Infrastructure.Persistence.Repositories;
 using FCGCatalog.Infrastructure.Shared;
 using FCGCatalog.Infrastructure.Shared.Security;
+using FCG.Shared.Infrastructure.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,7 @@ public static class InfrastructureConfiguration
 		services.ConfigureMessaging(configuration);
 		services.ConfigureDatabase(configuration);
 		services.ConfigureRepositories();
+		services.AddFcgRedisCache(configuration, instanceName: "fcg-catalog");
 
 		services.AddScoped<IEventPublisher, EventPublisherMassTransit>();
 		services.AddScoped<IUsuarioContexto, UsuarioContexto>();
