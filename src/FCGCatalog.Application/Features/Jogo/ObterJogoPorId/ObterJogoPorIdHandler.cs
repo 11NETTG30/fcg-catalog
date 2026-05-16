@@ -1,4 +1,3 @@
-using FCG.Shared.Domain.Application;
 using FCGCatalog.Application.Features.Jogo.ObterJogo;
 using FCGCatalog.Application.Features.Jogo.Shared;
 using FCGCatalog.Domain.Repositories;
@@ -11,24 +10,16 @@ namespace FCGCatalog.Application.Features.Jogo.ObterJogoPorId
         : IRequestHandler<ObterJogoPorIdQuery, JogoPublicoResponse>
     {
         private readonly IJogoRepository _repository;
-        private readonly ICacheService _cache;
 
-        public ObterJogoPorIdHandler(IJogoRepository repository, ICacheService cache)
+        public ObterJogoPorIdHandler(IJogoRepository repository)
         {
             _repository = repository;
-            _cache = cache;
         }
 
         public async Task<JogoPublicoResponse> Handle(
             ObterJogoPorIdQuery query,
             CancellationToken cancellationToken)
         {
-            var cacheKey = $"jogos:{query.Id}:publico";
-
-            var cached = await _cache.GetAsync<JogoPublicoResponse>(cacheKey, cancellationToken);
-            if (cached is not null)
-                return cached;
-
             var jogo = await _repository.ObterPorId(query.Id, cancellationToken);
 
             if (jogo is null || !jogo.Ativo)
@@ -41,8 +32,6 @@ namespace FCGCatalog.Application.Features.Jogo.ObterJogoPorId
                 Preco: jogo.Preco.Valor,
                 DataLancamento: jogo.DataLancamento
             );
-
-            await _cache.SetAsync(cacheKey, response, TimeSpan.FromMinutes(10), cancellationToken);
 
             return response;
         }

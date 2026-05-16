@@ -5,36 +5,30 @@ using MediatR;
 
 namespace FCGCatalog.Application.Features.Jogo.AtivarJogo
 {
-	public sealed class AtivarJogoHandler : IRequestHandler<AtivarJogoCommand, Unit>
-	{
-		private readonly IJogoRepository _repository;
-		private readonly ICacheService _cache;
+    public sealed class AtivarJogoHandler : IRequestHandler<AtivarJogoCommand, Unit>
+    {
+        private readonly IJogoRepository _repository;
+        private readonly ICacheService _cache;
 
-		public AtivarJogoHandler(IJogoRepository repository, ICacheService cache)
-		{
-			_repository = repository;
-			_cache = cache;
-		}
+        public AtivarJogoHandler(IJogoRepository repository, ICacheService cache)
+        {
+            _repository = repository;
+            _cache = cache;
+        }
 
-		public async Task<Unit> Handle(AtivarJogoCommand command, CancellationToken cancellationToken)
-		{
-			var jogo = await _repository.ObterPorId(command.Id, cancellationToken);
+        public async Task<Unit> Handle(AtivarJogoCommand command, CancellationToken cancellationToken)
+        {
+            var jogo = await _repository.ObterPorId(command.Id, cancellationToken)
+                ?? throw new NotFoundException($"O jogo de id {command.Id} não foi encontrado.");
 
-			if (jogo is null)
-				throw new NotFoundException($"O jogo de id {command.Id} não foi encontrado.");
+            jogo.Ativar();
 
-			jogo.Ativar();
+            _repository.Atualizar(jogo, cancellationToken);
+            await _repository.UnitOfWork.Commit(cancellationToken);
 
-			_repository.Atualizar(jogo, cancellationToken);
-			await _repository.UnitOfWork.Commit(cancellationToken);
+            await _cache.RemoveByPrefixAsync("jogos:lista:", cancellationToken);
 
-			await Task.WhenAll(
-				_cache.RemoveAsync($"jogos:{command.Id}:publico", cancellationToken),
-				_cache.RemoveAsync($"jogos:{command.Id}:admin", cancellationToken),
-				_cache.RemoveByPrefixAsync("jogos:lista:", cancellationToken)
-			);
-
-			return Unit.Value;
-		}
-	}
+            return Unit.Value;
+        }
+    }
 }
