@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FCGCatalog.Domain\FCGCatalog.Domain.csproj" />
     <ProjectReference Include="..\FCGCatalog.Infrastructure\FCGCatalog.Infrastructure.csproj" />
+    <PackageReference Include="FCG.Shared.Infrastructure" Version="1.2.0" />
   </ItemGroup>
 
 </Project>

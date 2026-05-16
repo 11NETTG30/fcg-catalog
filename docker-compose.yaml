@@ -35,6 +35,19 @@ services:
       timeout: 5s
       retries: 10
 
+  redis:
+    image: redis:7-alpine
+    container_name: fcg-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - fcg-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   catalog-api:
     build:
       context: .
@@ -47,15 +60,17 @@ services:
       - fcg-network
     environment:
       Documentacao__Habilitada: "true"
-    env_file: 
+    env_file:
       - .env
     restart: unless-stopped
     ports:
       - "8080:8080"
-    depends_on: 
+    depends_on:
       postgres:
         condition: service_healthy
       rabbitmq:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
 volumes:
