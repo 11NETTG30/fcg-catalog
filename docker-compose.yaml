@@ -48,6 +48,19 @@ services:
       timeout: 3s
       retries: 5
 
+  mongoDb:
+    image: mongo:7.0
+    container_name: fcg-mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - fcg-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   catalog-api:
     build:
       context: .
@@ -71,6 +84,8 @@ services:
       rabbitmq:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      mongoDb:
         condition: service_healthy
 
 volumes:

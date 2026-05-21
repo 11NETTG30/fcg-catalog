@@ -22,5 +22,7 @@
     <Project Path="src/FCGCatalog.Infrastructure/FCGCatalog.Infrastructure.csproj" Id="0f2058ad-d0de-4e25-a1ea-476ec635d6f8" />
     <Project Path="src/FCGCatalog.IoC/FCGCatalog.IoC.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="FCG.Catalog.Tests/FCG.Catalog.Tests.csproj" Id="54fa091a-1bf2-4e55-9483-0f7935755932" />
+  </Folder>
 </Solution>

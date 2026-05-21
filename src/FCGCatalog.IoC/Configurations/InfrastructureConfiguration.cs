@@ -29,6 +29,8 @@ public static class InfrastructureConfiguration
 		services.AddScoped<IUsuarioContexto, UsuarioContexto>();
 		services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));
 
+		services.AddMongoDb(configuration);
+
 		return services;
 	}
 
@@ -37,7 +39,8 @@ public static class InfrastructureConfiguration
 	{
 		services.AddScoped<IJogoRepository, JogoRepository>();
 		services.AddScoped<IBibliotecaUsuarioRepository, BibliotecaUsuarioRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
 
-		return services;
+        return services;
 	}
 }
