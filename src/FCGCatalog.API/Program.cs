@@ -1,4 +1,5 @@
-﻿using FCG.Shared.Infrastructure.Configurations;
+﻿using FCG.Shared.Infrastructure.Extensions;
+using FCG.Shared.Infrastructure.Configurations;
 using FCGCatalog.API.Configurations;
 using FCGCatalog.API.Middlewares;
 using FCGCatalog.Infrastructure.Configurations;
@@ -6,8 +7,8 @@ using FCGCatalog.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddSecurity();
 builder.RegisterIoCConfigurations();
-
 builder.AddLoggingConfiguration();
 builder.AddObservabilidade();
 builder.Services.AddControllersConfiguration();

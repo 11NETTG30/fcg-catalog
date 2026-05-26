@@ -19,7 +19,6 @@ public static class InfrastructureConfiguration
 		this IServiceCollection services,
 		IConfiguration configuration)
 	{
-		services.ConfigureJwtAuthentication(configuration);
 		services.ConfigureMessaging(configuration);
 		services.ConfigureDatabase(configuration);
 		services.ConfigureRepositories();
