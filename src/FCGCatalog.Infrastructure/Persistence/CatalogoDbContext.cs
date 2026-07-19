@@ -1,5 +1,6 @@
 ﻿using FCGCatalog.Domain.Entities;
 using FCGCatalog.Infrastructure.Persistence.Configurations;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace FCGCatalog.Infrastructure.Persistence;
@@ -19,7 +20,10 @@ public sealed class CatalogoDbContext : DbContextUoW
 			typeof(CatalogoDbContext).Assembly,
 			type => type.Namespace == typeof(JogoConfiguration).Namespace
 		);
-	}
 
+		modelBuilder.AddInboxStateEntity();
+		modelBuilder.AddOutboxMessageEntity();
+		modelBuilder.AddOutboxStateEntity();
+	}
 }
 

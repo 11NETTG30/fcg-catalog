@@ -1,4 +1,5 @@
 ﻿using FCGCatalog.Infrastructure.Messaging.Setup;
+using FCGCatalog.Infrastructure.Persistence;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,19 @@ public static class RabbitMqConfiguration
 
 		services.AddMassTransit(x =>
 		{
+			x.AddEntityFrameworkOutbox<CatalogoDbContext>(o =>
+			{
+				o.UsePostgres();
+				o.UseBusOutbox();
+			});
+
 			x.AddConsumers(typeof(RabbitMqConfiguration).Assembly);
+
+			x.AddConfigureEndpointsCallback((context, name, cfg) =>
+			{
+				cfg.UseEntityFrameworkOutbox<CatalogoDbContext>(context);
+				cfg.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(1)));
+			});
 
 			x.UsingRabbitMq((context, cfg) =>
 			{
@@ -29,10 +42,10 @@ public static class RabbitMqConfiguration
 					rabbit.Host,
 					rabbit.VirtualHost,
 					h =>
-					{
-						h.Username(rabbit.Username);
-						h.Password(rabbit.Password);
-					});
+				{
+					h.Username(rabbit.Username);
+					h.Password(rabbit.Password);
+				});
 
 				cfg.ConfigureEndpoints(context);
 			});
