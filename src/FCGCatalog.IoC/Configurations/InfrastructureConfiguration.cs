@@ -29,6 +29,7 @@ public static class InfrastructureConfiguration
 		services.AddSingleton(typeof(IDomainLogger<>), typeof(DomainLogger<>));
 
 		services.AddMongoDb(configuration);
+		services.AddElasticsearch(configuration);
 
 		return services;
 	}

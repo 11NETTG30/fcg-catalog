@@ -1,4 +1,5 @@
 ﻿using FCGCatalog.Application.Abstractions.Security;
+using FCGCatalog.Application.Features.Jogo.BuscarJogos;
 using FCGCatalog.Application.Features.Jogo.ListarJogosDisponiveis;
 using FCGCatalog.Application.Features.Jogo.ObterJogo;
 using FCGCatalog.Application.Features.Jogo.Shared;
@@ -10,7 +11,6 @@ namespace FCGCatalog.API.Controllers;
 
 [ApiController]
 [Route("api/jogos")]
-[Authorize]
 public sealed class JogosController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -37,6 +37,19 @@ public sealed class JogosController : ControllerBase
 	public async Task<IActionResult> Listar(CancellationToken cancellationToken)
 	{
 		var query = new ListarJogosDisponiveisQuery();
+		var response = await _mediator.Send(query, cancellationToken);
+		return Ok(response);
+	}
+
+	[HttpGet("search")]
+	[ProducesResponseType(typeof(IEnumerable<JogoPublicoResponse>), StatusCodes.Status200OK)]
+	public async Task<IActionResult> Buscar(
+		[FromQuery] string termo,
+		[FromQuery] int pagina = 1,
+		[FromQuery] int tamanhoPagina = 10,
+		CancellationToken cancellationToken = default)
+	{
+		var query = new BuscarJogosQuery(termo, pagina, tamanhoPagina);
 		var response = await _mediator.Send(query, cancellationToken);
 		return Ok(response);
 	}

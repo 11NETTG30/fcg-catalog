@@ -11,7 +11,6 @@ namespace FCGCatalog.API.Controllers;
 
 [ApiController]
 [Route("api/biblioteca-usuario")]
-[Authorize]
 public sealed class BibliotecaUsuarioController : ControllerBase
 {
 	private readonly IMediator _mediator;
@@ -36,7 +35,6 @@ public sealed class BibliotecaUsuarioController : ControllerBase
 	}
 
 	[HttpGet("{usuarioId:guid}")]
-	[Authorize(Roles = RoleNames.Admin)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<IActionResult> ObterPorUsuario(Guid usuarioId, CancellationToken cancellationToken)
 	{

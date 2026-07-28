@@ -50,6 +50,7 @@ public sealed class IniciarCompraJogoHandler : IRequestHandler<IniciarCompraJogo
 		);
 
 		await _eventPublisher.PublishAsync(evento, cancellationToken);
+		await _jogoRepository.UnitOfWork.Commit(cancellationToken); 
 
 		return Unit.Value;
 	}
