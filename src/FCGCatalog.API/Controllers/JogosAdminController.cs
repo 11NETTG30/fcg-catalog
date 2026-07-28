@@ -15,6 +15,7 @@ namespace FCGCatalog.API.Controllers
 {
 	[ApiController]
 	[Route("api/admin/jogos")]
+	[Authorize(Roles = RoleNames.Admin)]
 	public sealed class JogosAdminController : ControllerBase
 	{
 		private readonly IMediator _mediator;

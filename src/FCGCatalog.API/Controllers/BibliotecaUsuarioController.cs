@@ -11,6 +11,7 @@ namespace FCGCatalog.API.Controllers;
 
 [ApiController]
 [Route("api/biblioteca-usuario")]
+[Authorize]
 public sealed class BibliotecaUsuarioController : ControllerBase
 {
 	private readonly IMediator _mediator;

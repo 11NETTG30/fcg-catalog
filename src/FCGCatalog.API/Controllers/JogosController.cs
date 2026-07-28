@@ -11,6 +11,7 @@ namespace FCGCatalog.API.Controllers;
 
 [ApiController]
 [Route("api/jogos")]
+[Authorize]
 public sealed class JogosController : ControllerBase
 {
     private readonly IMediator _mediator;
