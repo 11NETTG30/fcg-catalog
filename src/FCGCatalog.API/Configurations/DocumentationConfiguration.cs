@@ -55,6 +55,7 @@ public static class DocumentationConfiguration
 				Title = "FCG Catalog API",
 				Version = "v1",
 				Description = """
+					4ª Etapa do Tech Challenge da FIAP Cloud Games (FCG).
 					Microsserviço responsável pelo catálogo de jogos da plataforma FIAP Cloud Games (FCG).
 
 					**Responsabilidades:**
